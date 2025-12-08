@@ -1,0 +1,523 @@
+Species,Forest,Summer,Fall,Spring,Expert
+Snow Goose,Low,Low,Low,Low,Jeff Bolsinger
+Canada Goose,Low,Low,Low,Low,Jeff Bolsinger
+Mute Swan,Low,Low,Low,Low,Jeff Bolsinger
+Wood Duck,Medium,Medium,Medium,Medium,Jeff Bolsinger
+Blue-winged Teal,Low,Low,Low,Low,Jeff Bolsinger
+Northern Shoveler,Low,Low,Low,Low,Jeff Bolsinger
+Gadwall,Low,Low,Low,Low,Jeff Bolsinger
+American Wigeon,Low,Low,Low,Low,Jeff Bolsinger
+Mallard,Low,Low,Low,Low,Jeff Bolsinger
+American Black Duck,Low,Low,Low,Low,Jeff Bolsinger
+Northern Pintail,Low,Low,Low,Low,Jeff Bolsinger
+Green-winged Teal,Low,Low,Low,Low,Jeff Bolsinger
+Redhead,Low,Low,Low,Low,Jeff Bolsinger
+Ring-necked Duck,Low,Low,Low,Low,Jeff Bolsinger
+Greater Scaup,Low,Low,Low,Low,Jeff Bolsinger
+Lesser Scaup,Low,Low,Low,Low,Jeff Bolsinger
+Common Goldeneye,Low,Low,Low,Low,Jeff Bolsinger
+Hooded Merganser,Low,Low,Low,Low,Jeff Bolsinger
+Common Merganser,Low,Low,Low,Low,Jeff Bolsinger
+Red-breasted Merganser,Low,Low,Low,Low,Jeff Bolsinger
+Wild Turkey,Low,Low,Low,Low,Jeff Bolsinger
+Ruffed Grouse,High,Medium,Medium,High,Jeff Bolsinger
+Rock Pigeon,Low,Low,Low,Low,Jeff Bolsinger
+Mourning Dove,Low,Low,Low,Low,Jeff Bolsinger
+YELLOW-BILLED CUCKOO,High,Medium,Low,Medium,Jeff Bolsinger
+Black-billed Cuckoo,Medium,Medium,Medium,Medium,Jeff Bolsinger
+Chimney Swift,Low,Low,Low,Low,Jeff Bolsinger
+Ruby-throated Hummingbird,High,High,High,High,Jeff Bolsinger
+Virginia Rail,Low,Low,Low,Low,Jeff Bolsinger
+Common Gallinule,Low,Low,Low,Low,Jeff Bolsinger
+American Coot,Low,Low,Low,Low,Jeff Bolsinger
+Black-bellied Plover,Low,Low,Low,Low,Jeff Bolsinger
+Killdeer,Low,Low,Low,Low,Jeff Bolsinger
+Semipalmated Plover,Low,Low,Low,Low,Jeff Bolsinger
+American Woodcock,Medium,Low,Low,Medium,Jeff Bolsinger
+Wilson's Snipe,Low,Low,Low,Low,Jeff Bolsinger
+Spotted Sandpiper,Low,Low,Low,Low,Jeff Bolsinger
+Solitary Sandpiper,Low,Low,Low,Low,Jeff Bolsinger
+Lesser Yellowlegs,Low,Low,Low,Low,Jeff Bolsinger
+Greater Yellowlegs,Low,Low,Low,Low,Jeff Bolsinger
+Least Sandpiper,Low,Low,Low,Low,Jeff Bolsinger
+Pectoral Sandpiper,Low,Low,Low,Low,Jeff Bolsinger
+Semipalmated Sandpiper,Low,Low,Low,Low,Jeff Bolsinger
+Bonaparte's Gull,Low,Low,Low,Low,Jeff Bolsinger
+Ring-billed Gull,Low,Low,Low,Low,Jeff Bolsinger
+American Herring Gull,Low,Low,Low,Low,Jeff Bolsinger
+Great Black-backed Gull,Low,Low,Low,Low,Jeff Bolsinger
+Caspian Tern,Low,Low,Low,Low,Jeff Bolsinger
+Black Tern,Low,Low,Low,Low,Jeff Bolsinger
+Common Tern,Low,Low,Low,Low,Jeff Bolsinger
+Pied-billed Grebe,Low,Low,Low,Low,Jeff Bolsinger
+Red-necked Grebe,Low,Low,Low,Low,Jeff Bolsinger
+Common Loon,Low,Low,Low,Low,Jeff Bolsinger
+Double-crested Cormorant,Low,Low,Low,Low,Jeff Bolsinger
+American Bittern,Low,Low,Low,Low,Jeff Bolsinger
+Green Heron,Low,Low,Low,Low,Jeff Bolsinger
+Great Egret,Low,Low,Low,Low,Jeff Bolsinger
+Great Blue Heron,Low,Low,Low,Low,Jeff Bolsinger
+Turkey Vulture,Low,Low,Low,Low,Jeff Bolsinger
+Osprey,Low,Low,Low,Low,Jeff Bolsinger
+Sharp-shinned Hawk,High,High,High,High,Jeff Bolsinger
+Cooper's Hawk,High,High,High,High,Jeff Bolsinger
+American Goshawk,Medium,Low,Low,Low,Jeff Bolsinger
+Northern Harrier,Low,Low,Low,Low,Jeff Bolsinger
+Bald Eagle,Low,Low,Low,Low,Jeff Bolsinger
+Broad-winged Hawk,High,High,High,High,Jeff Bolsinger
+Red-shouldered Hawk,High,Medium,Medium,Medium,Jeff Bolsinger
+Red-tailed Hawk,Low,Low,Low,Low,Jeff Bolsinger
+Great Horned Owl,High,Medium,Medium,Medium,Jeff Bolsinger
+Barred Owl,High,High,High,High,Jeff Bolsinger
+Belted Kingfisher,Low,Low,Low,Low,Jeff Bolsinger
+Yellow-bellied Sapsucker,High,High,High,High,Jeff Bolsinger
+Red-bellied Woodpecker,High,Medium,Medium,Medium,Jeff Bolsinger
+Downy Woodpecker,High,High,High,High,Jeff Bolsinger
+Hairy Woodpecker,High,High,High,High,Jeff Bolsinger
+Pileated Woodpecker,High,High,High,High,Jeff Bolsinger
+Northern Flicker,Low,Low,Low,Low,Jeff Bolsinger
+American Kestrel,Low,Low,Low,Low,Jeff Bolsinger
+Merlin,Medium,Medium,Medium,Medium,Jeff Bolsinger
+Peregrine Falcon,Low,Low,Low,Low,Jeff Bolsinger
+Olive-sided Flycatcher,Low,Low,Low,Low,Jeff Bolsinger
+Eastern Wood-Pewee,High,High,High,High,Jeff Bolsinger
+Yellow-bellied Flycatcher,Medium,Medium,Medium,Medium,Jeff Bolsinger
+Alder Flycatcher,Low,Low,Low,Low,Jeff Bolsinger
+Willow Flycatcher,Low,Low,Low,Low,Jeff Bolsinger
+Least Flycatcher,High,High,High,High,Jeff Bolsinger
+Eastern Phoebe,Medium,Medium,Medium,Medium,Jeff Bolsinger
+Great Crested Flycatcher,High,High,High,High,Jeff Bolsinger
+Eastern Kingbird,Low,Low,Low,Low,Jeff Bolsinger
+Yellow-throated Vireo,High,High,High,High,Jeff Bolsinger
+Blue-headed Vireo,High,High,High,High,Jeff Bolsinger
+Warbling Vireo,Medium,Medium,Medium,Medium,Jeff Bolsinger
+Red-eyed Vireo,High,High,High,High,Jeff Bolsinger
+Canada Jay,Medium,Low,Low,Low,Jeff Bolsinger
+Blue Jay,High,High,High,High,Jeff Bolsinger
+American Crow,Low,Low,Low,Low,Jeff Bolsinger
+Common Raven,High,High,High,High,Jeff Bolsinger
+Black-capped Chickadee,High,High,High,High,Jeff Bolsinger
+Tufted Titmouse,High,Medium,Medium,Medium,Jeff Bolsinger
+Horned Lark,Low,Low,Low,Low,Jeff Bolsinger
+Tree Swallow,Medium,Medium,Medium,Medium,Jeff Bolsinger
+Purple Martin,Low,Low,Low,Low,Jeff Bolsinger
+Barn Swallow,Low,Low,Low,Low,Jeff Bolsinger
+Cliff Swallow,Low,Low,Low,Low,Jeff Bolsinger
+Ruby-crowned Kinglet,High,Low,High,High,Jeff Bolsinger
+Golden-crowned Kinglet,High,Medium,High,High,Jeff Bolsinger
+White-breasted Nuthatch,High,High,High,High,Jeff Bolsinger
+Red-breasted Nuthatch,High,High,High,High,Jeff Bolsinger
+Brown Creeper,High,High,High,High,Jeff Bolsinger
+Northern House Wren,Medium,Medium,Medium,Medium,Jeff Bolsinger
+Winter Wren,High,High,High,High,Jeff Bolsinger
+Marsh Wren,Low,Low,Low,Low,Jeff Bolsinger
+Carolina Wren,Low,Low,Low,Low,Jeff Bolsinger
+European Starling,Medium,Medium,Medium,Medium,Jeff Bolsinger
+Gray Catbird,Low,Low,Low,Low,Jeff Bolsinger
+Brown Thrasher,Low,Low,Low,Low,Jeff Bolsinger
+Eastern Bluebird,Low,Low,Low,Low,Jeff Bolsinger
+Veery,High,High,High,High,Jeff Bolsinger
+Swainson's Thrush,High,Low,Medium,High,Jeff Bolsinger
+Hermit Thrush,High,High,High,High,Jeff Bolsinger
+Wood Thrush,High,High,High,High,Jeff Bolsinger
+American Robin,High,High,High,High,Jeff Bolsinger
+Cedar Waxwing,Medium,Medium,Medium,Medium,Jeff Bolsinger
+House Sparrow,Low,Low,Low,Low,Jeff Bolsinger
+American Pipit,Low,Low,Low,Low,Jeff Bolsinger
+Evening Grosbeak,Medium,Low,Low,Low,Jeff Bolsinger
+House Finch,Low,Low,Low,Low,Jeff Bolsinger
+Purple Finch,High,High,High,High,Jeff Bolsinger
+Red Crossbill,High,Medium,Medium,Medium,Jeff Bolsinger
+Pine Siskin,High,Medium,Medium,Medium,Jeff Bolsinger
+American Goldfinch,Low,Low,Low,Low,Jeff Bolsinger
+Chipping Sparrow,Low,Low,Low,Low,Jeff Bolsinger
+Field Sparrow,Low,Low,Low,Low,Jeff Bolsinger
+Dark-eyed Junco,High,Medium,High,High,Jeff Bolsinger
+White-crowned Sparrow,Low,Low,Low,Low,Jeff Bolsinger
+White-throated Sparrow,High,High,High,High,Jeff Bolsinger
+Savannah Sparrow,Low,Low,Low,Low,Jeff Bolsinger
+Song Sparrow,Low,Low,Low,Low,Jeff Bolsinger
+Lincoln's Sparrow,Low,Low,Low,Low,Jeff Bolsinger
+Swamp Sparrow,Low,Low,Low,Low,Jeff Bolsinger
+Eastern Towhee,Low,Low,Low,Low,Jeff Bolsinger
+Bobolink,Low,Low,Low,Low,Jeff Bolsinger
+Eastern Meadowlark,Low,Low,Low,Low,Jeff Bolsinger
+Baltimore Oriole,Low,Low,Low,Low,Jeff Bolsinger
+Red-winged Blackbird,Low,Low,Low,Low,Jeff Bolsinger
+Brown-headed Cowbird,Medium,Medium,Medium,Medium,Jeff Bolsinger
+Rusty Blackbird,Low,Low,Low,Low,Jeff Bolsinger
+Common Grackle,Low,Low,Low,Low,Jeff Bolsinger
+Ovenbird,High,High,High,High,Jeff Bolsinger
+Northern Waterthrush,High,High,High,High,Jeff Bolsinger
+Golden-winged Warbler,Medium,Medium,Low,Medium,Jeff Bolsinger
+Black-and-white Warbler,High,High,High,High,Jeff Bolsinger
+Tennessee Warbler,Low,Low,Medium,Medium,Jeff Bolsinger
+Nashville Warbler,Medium,Medium,Medium,Medium,Jeff Bolsinger
+Mourning Warbler,Medium,Medium,Medium,Medium,Jeff Bolsinger
+Common Yellowthroat,Low,Low,Low,Low,Jeff Bolsinger
+American Redstart,High,High,High,High,Jeff Bolsinger
+CERULEAN WARBLER,High,Medium,Low,Medium,Jeff Bolsinger
+Cape May Warbler,High,Low,Medium,Medium,Jeff Bolsinger
+Northern Parula,High,Medium,High,High,Jeff Bolsinger
+Magnolia Warbler,High,Medium,High,High,Jeff Bolsinger
+Bay-breasted Warbler,High,Low,Medium,Medium,Jeff Bolsinger
+Blackburnian Warbler,High,High,High,High,Jeff Bolsinger
+Yellow Warbler,Low,Low,Low,Low,Jeff Bolsinger
+Chestnut-sided Warbler,Low,Low,Low,Low,Jeff Bolsinger
+Blackpoll Warbler,High,Low,High,High,Jeff Bolsinger
+Black-throated Blue Warbler,High,High,High,High,Jeff Bolsinger
+Palm Warbler,Low,Low,Low,Low,Jeff Bolsinger
+Pine Warbler,High,High,High,High,Jeff Bolsinger
+Yellow-rumped Warbler,High,High,High,High,Jeff Bolsinger
+Black-throated Green Warbler,High,High,High,High,Jeff Bolsinger
+Canada Warbler,High,High,High,High,Jeff Bolsinger
+Scarlet Tanager,High,High,High,High,Jeff Bolsinger
+Northern Cardinal,Medium,Medium,Medium,Medium,Jeff Bolsinger
+Rose-breasted Grosbeak,High,High,High,High,Jeff Bolsinger
+Indigo Bunting,Low,Low,Low,Low,Jeff Bolsinger
+Snow Goose,Low,Low,Medium,Medium,Tom Langen
+Canada Goose,Low,High,High,High,Tom Langen
+Mute Swan,Low,Medium,Medium,Medium,Tom Langen
+Wood Duck,Medium,High,High,High,Tom Langen
+Blue-winged Teal,Low,Low,Medium,Medium,Tom Langen
+Northern Shoveler,Low,Low,Medium,Medium,Tom Langen
+Gadwall,Low,Low,Medium,Medium,Tom Langen
+American Wigeon,Low,High,High,High,Tom Langen
+Mallard,Low,High,High,High,Tom Langen
+American Black Duck,Low,High,High,High,Tom Langen
+Northern Pintail,Low,Low,Medium,Medium,Tom Langen
+Green-winged Teal,Low,High,High,High,Tom Langen
+Redhead,Low,Low,Medium,Medium,Tom Langen
+Ring-necked Duck,Low,High,High,High,Tom Langen
+Greater Scaup,Low,Low,Medium,Medium,Tom Langen
+Lesser Scaup,Low,Low,Medium,Medium,Tom Langen
+Common Goldeneye,Low,Low,Medium,Medium,Tom Langen
+Hooded Merganser,Low,High,High,High,Tom Langen
+Common Merganser,Low,High,High,High,Tom Langen
+Red-breasted Merganser,Low,Low,Medium,Medium,Tom Langen
+Wild Turkey,High,High,High,High,Tom Langen
+Ruffed Grouse,High,High,High,High,Tom Langen
+Rock Pigeon,Low,High,High,High,Tom Langen
+Mourning Dove,Low,Medium,Medium,Medium,Tom Langen
+Black-billed Cuckoo,Medium,Medium,Low,Low,Tom Langen
+Chimney Swift,Medium,High,High,High,Tom Langen
+Ruby-throated Hummingbird,Medium,High,High,High,Tom Langen
+Virginia Rail,Low,Medium,Medium,Medium,Tom Langen
+Common Gallinule,Low,Medium,Medium,Medium,Tom Langen
+American Coot,Low,Low,Low,Low,Tom Langen
+Black-bellied Plover,Low,Low,Low,Low,Tom Langen
+Killdeer,Low,High,High,High,Tom Langen
+Semipalmated Plover,Low,Low,Medium,Medium,Tom Langen
+American Woodcock,Low,High,Medium,Medium,Tom Langen
+Wilson's Snipe,Low,High,High,High,Tom Langen
+Spotted Sandpiper,Low,High,High,High,Tom Langen
+Solitary Sandpiper,Low,Low,Medium,Medium,Tom Langen
+Lesser Yellowlegs,Low,Low,Medium,Medium,Tom Langen
+Greater Yellowlegs,Low,Low,Medium,Medium,Tom Langen
+Least Sandpiper,Low,Low,Medium,Medium,Tom Langen
+Pectoral Sandpiper,Low,Low,Medium,Medium,Tom Langen
+Semipalmated Sandpiper,Low,Low,Medium,Medium,Tom Langen
+Bonaparte's Gull,Low,Low,Medium,Medium,Tom Langen
+Ring-billed Gull,Low,High,High,High,Tom Langen
+American Herring Gull,Low,High,High,High,Tom Langen
+Great Black-backed Gull,Low,High,Low,Low,Tom Langen
+Caspian Tern,Low,Medium,Medium,Medium,Tom Langen
+Black Tern,Low,Medium,Medium,Medium,Tom Langen
+Common Tern,Low,High,High,High,Tom Langen
+Pied-billed Grebe,Low,High,High,High,Tom Langen
+Red-necked Grebe,Low,Low,Low,Low,Tom Langen
+Common Loon,Low,Medium,Medium,Medium,Tom Langen
+Double-crested Cormorant,Low,High,High,High,Tom Langen
+American Bittern,Low,High,High,High,Tom Langen
+Green Heron,Low,High,High,High,Tom Langen
+Great Egret,Low,High,High,High,Tom Langen
+Great Blue Heron,Low,High,High,High,Tom Langen
+Turkey Vulture,Medium,Medium,High,High,Tom Langen
+Osprey,Low,High,High,High,Tom Langen
+Sharp-shinned Hawk,Medium,High,High,High,Tom Langen
+Cooper's Hawk,Medium,High,High,High,Tom Langen
+Northern Harrier,Low,High,High,High,Tom Langen
+Bald Eagle,Low,High,High,High,Tom Langen
+Broad-winged Hawk,High,High,High,High,Tom Langen
+Red-shouldered Hawk,Medium,Medium,Medium,Medium,Tom Langen
+Red-tailed Hawk,Medium,High,High,High,Tom Langen
+Great Horned Owl,High,High,High,High,Tom Langen
+Barred Owl,High,High,High,High,Tom Langen
+Belted Kingfisher,Low,High,High,High,Tom Langen
+Yellow-bellied Sapsucker,High,High,High,High,Tom Langen
+Red-bellied Woodpecker,Medium,Medium,Medium,Medium,Tom Langen
+Downy Woodpecker,High,High,High,High,Tom Langen
+Hairy Woodpecker,High,High,High,High,Tom Langen
+Pileated Woodpecker,High,High,High,High,Tom Langen
+Northern Flicker,High,High,High,High,Tom Langen
+American Kestrel,Low,High,High,High,Tom Langen
+Merlin,Low,High,High,High,Tom Langen
+Peregrine Falcon,Low,Medium,Medium,Medium,Tom Langen
+Olive-sided Flycatcher,Medium,High,High,Low,Tom Langen
+Eastern Wood-Pewee,High,High,High,High,Tom Langen
+Yellow-bellied Flycatcher,Medium,Medium,Low,Low,Tom Langen
+Alder Flycatcher,Low,High,High,Low,Tom Langen
+Willow Flycatcher,Low,High,High,High,Tom Langen
+Least Flycatcher,High,High,High,High,Tom Langen
+Eastern Phoebe,High,High,High,High,Tom Langen
+Great Crested Flycatcher,High,High,High,High,Tom Langen
+Eastern Kingbird,High,High,High,High,Tom Langen
+Yellow-throated Vireo,High,High,High,High,Tom Langen
+Blue-headed Vireo,High,Medium,High,High,Tom Langen
+Warbling Vireo,High,High,High,High,Tom Langen
+Red-eyed Vireo,High,High,High,High,Tom Langen
+Canada Jay,Medium,Medium,Medium,Medium,Tom Langen
+Blue Jay,High,High,High,High,Tom Langen
+American Crow,High,High,High,High,Tom Langen
+Common Raven,High,High,High,High,Tom Langen
+Black-capped Chickadee,High,High,High,High,Tom Langen
+Tufted Titmouse,Low,Low,Low,Low,Tom Langen
+Horned Lark,Low,High,Low,High,Tom Langen
+Tree Swallow,Low,High,High,High,Tom Langen
+Purple Martin,Low,High,High,High,Tom Langen
+Barn Swallow,Low,High,High,High,Tom Langen
+Cliff Swallow,Low,High,High,High,Tom Langen
+Ruby-crowned Kinglet,High,Medium,High,High,Tom Langen
+Golden-crowned Kinglet,High,Medium,High,High,Tom Langen
+White-breasted Nuthatch,High,High,High,High,Tom Langen
+Red-breasted Nuthatch,High,High,High,High,Tom Langen
+Brown Creeper,High,High,High,High,Tom Langen
+Northern House Wren,High,High,High,High,Tom Langen
+Winter Wren,High,High,High,High,Tom Langen
+Marsh Wren,Low,High,High,High,Tom Langen
+Carolina Wren,Medium,Medium,Medium,Medium,Tom Langen
+European Starling,High,High,High,High,Tom Langen
+Gray Catbird,High,High,High,High,Tom Langen
+Brown Thrasher,High,High,High,High,Tom Langen
+Eastern Bluebird,High,High,High,High,Tom Langen
+Veery,High,High,High,High,Tom Langen
+Swainson's Thrush,Medium,Medium,Low,Medium,Tom Langen
+Hermit Thrush,High,High,High,High,Tom Langen
+Wood Thrush,High,High,High,High,Tom Langen
+American Robin,High,High,High,High,Tom Langen
+Cedar Waxwing,High,High,High,High,Tom Langen
+House Sparrow,Low,High,High,High,Tom Langen
+American Pipit,Low,Low,Medium,Medium,Tom Langen
+Evening Grosbeak,Medium,Medium,Low,Medium,Tom Langen
+House Finch,Low,High,High,High,Tom Langen
+Purple Finch,High,High,High,High,Tom Langen
+Red Crossbill,Medium,Low,Medium,Medium,Tom Langen
+Pine Siskin,Medium,Low,Medium,Medium,Tom Langen
+American Goldfinch,Medium,High,High,High,Tom Langen
+Chipping Sparrow,Low,High,High,High,Tom Langen
+Field Sparrow,Low,Low,Low,Low,Tom Langen
+Dark-eyed Junco,High,High,High,High,Tom Langen
+White-crowned Sparrow,High,High,High,High,Tom Langen
+White-throated Sparrow,High,Low,High,High,Tom Langen
+Savannah Sparrow,Low,High,High,High,Tom Langen
+Song Sparrow,Low,High,High,High,Tom Langen
+Lincoln's Sparrow,Low,High,High,High,Tom Langen
+Swamp Sparrow,Low,High,High,High,Tom Langen
+Eastern Towhee,High,High,High,High,Tom Langen
+Bobolink,Low,High,High,High,Tom Langen
+Eastern Meadowlark,Low,High,High,High,Tom Langen
+Baltimore Oriole,High,High,High,High,Tom Langen
+Red-winged Blackbird,Low,High,High,High,Tom Langen
+Brown-headed Cowbird,High,High,High,High,Tom Langen
+Rusty Blackbird,Medium,Low,High,High,Tom Langen
+Common Grackle,High,High,High,High,Tom Langen
+Ovenbird,High,High,High,High,Tom Langen
+Northern Waterthrush,Medium,Medium,Medium,Medium,Tom Langen
+Golden-winged Warbler,Medium,Medium,Medium,Medium,Tom Langen
+Black-and-white Warbler,High,High,High,High,Tom Langen
+Tennessee Warbler,High,Low,High,High,Tom Langen
+Nashville Warbler,Medium,Medium,High,High,Tom Langen
+Mourning Warbler,Medium,Medium,Medium,Medium,Tom Langen
+Common Yellowthroat,Low,High,High,High,Tom Langen
+American Redstart,High,High,High,High,Tom Langen
+Cape May Warbler,Medium,Low,Medium,Medium,Tom Langen
+Northern Parula,High,Low,High,High,Tom Langen
+Magnolia Warbler,Medium,Medium,Medium,Medium,Tom Langen
+Bay-breasted Warbler,High,Low,High,High,Tom Langen
+Blackburnian Warbler,High,High,High,High,Tom Langen
+Yellow Warbler,High,High,High,High,Tom Langen
+Chestnut-sided Warbler,High,High,High,High,Tom Langen
+Blackpoll Warbler,Medium,Medium,Medium,Medium,Tom Langen
+Black-throated Blue Warbler,High,High,High,High,Tom Langen
+Palm Warbler,High,High,High,High,Tom Langen
+Pine Warbler,High,High,High,High,Tom Langen
+Yellow-rumped Warbler,High,High,High,High,Tom Langen
+Black-throated Green Warbler,High,High,High,High,Tom Langen
+Canada Warbler,Medium,Medium,Medium,Medium,Tom Langen
+Scarlet Tanager,High,High,High,High,Tom Langen
+Northern Cardinal,High,High,High,High,Tom Langen
+Rose-breasted Grosbeak,High,High,High,High,Tom Langen
+Indigo Bunting,Medium,Medium,Medium,Medium,Tom Langen
+Snow Goose,low,low,low,low,Glenn Johnson
+Canada Goose,low,low,low,low,Glenn Johnson
+Mute Swan,low,low,low,low,Glenn Johnson
+Wood Duck,med,me,low,med,Glenn Johnson
+Blue-winged Teal,low,low,low,low,Glenn Johnson
+Northern Shoveler,low,low,low,low,Glenn Johnson
+Gadwall,low,low,low,low,Glenn Johnson
+American Wigeon,low,low,low,low,Glenn Johnson
+Mallard,low,low,low,low,Glenn Johnson
+American Black Duck,low,low,low,low,Glenn Johnson
+Northern Pintail,low,low,low,low,Glenn Johnson
+Green-winged Teal,low,low,low,low,Glenn Johnson
+Redhead,low,low,low,low,Glenn Johnson
+Ring-necked Duck,low,low,low,low,Glenn Johnson
+Greater Scaup,low,low,low,low,Glenn Johnson
+Lesser Scaup,low,low,low,low,Glenn Johnson
+Common Goldeneye,low,low,med,low,Glenn Johnson
+Hooded Merganser,low,low,low,low,Glenn Johnson
+Common Merganser,low,low,low,low,Glenn Johnson
+Red-breasted Merganser,low,low,low,low,Glenn Johnson
+Wild Turkey,high,high,high,high,Glenn Johnson
+Ruffed Grouse,high,high,high,high,Glenn Johnson
+Rock Pigeon,low,low,low,low,Glenn Johnson
+Mourning Dove,low,low,low,low,Glenn Johnson
+Black-billed Cuckoo,low,low,low,low,Glenn Johnson
+Chimney Swift,Low,Low,Low,Low,Glenn Johnson
+Ruby-throated Hummingbird,high,high,low,low,Glenn Johnson
+Virginia Rail,low,low,low,low,Glenn Johnson
+Common Gallinule,low,low,low,low,Glenn Johnson
+American Coot,low,low,low,low,Glenn Johnson
+Black-bellied Plover,low,low,low,low,Glenn Johnson
+Killdeer,low,low,low,low,Glenn Johnson
+Semipalmated Plover,low,low,low,low,Glenn Johnson
+American Woodcock,med,med,low,low,Glenn Johnson
+Wilson's Snipe,low,low,low,low,Glenn Johnson
+Spotted Sandpiper,med,med,low,low,Glenn Johnson
+Solitary Sandpiper,low,low,low,low,Glenn Johnson
+Lesser Yellowlegs,low,low,low,low,Glenn Johnson
+Greater Yellowlegs,low,low,low,low,Glenn Johnson
+Least Sandpiper,low,low,low,low,Glenn Johnson
+Pectoral Sandpiper,low,low,low,low,Glenn Johnson
+Semipalmated Sandpiper,low,low,low,low,Glenn Johnson
+Bonaparte's Gull,low,low,low,low,Glenn Johnson
+Ring-billed Gull,low,low,low,low,Glenn Johnson
+American Herring Gull,low,low,low,low,Glenn Johnson
+Great Black-backed Gull,low,low,low,low,Glenn Johnson
+Caspian Tern,low,low,low,low,Glenn Johnson
+Black Tern,low,low,low,low,Glenn Johnson
+Common Tern,low,low,low,low,Glenn Johnson
+Pied-billed Grebe,low,low,low,low,Glenn Johnson
+Red-necked Grebe,low,low,low,low,Glenn Johnson
+Common Loon,low,low,low,low,Glenn Johnson
+Double-crested Cormorant,low,low,low,low,Glenn Johnson
+American Bittern,low,low,low,low,Glenn Johnson
+Green Heron,low,low,low,low,Glenn Johnson
+Great Egret,low,low,low,low,Glenn Johnson
+Great Blue Heron,low,low,low,low,Glenn Johnson
+Turkey Vulture,med,med,low,low,Glenn Johnson
+Osprey,low,low,low,low,Glenn Johnson
+Sharp-shinned Hawk,high,high,high,high,Glenn Johnson
+Cooper's Hawk,high,high,high,high,Glenn Johnson
+Northern Harrier,low,low,low,low,Glenn Johnson
+Bald Eagle,low,low,low,low,Glenn Johnson
+Broad-winged Hawk,high,high,high,high,Glenn Johnson
+Red-shouldered Hawk,high,high,high,high,Glenn Johnson
+Red-tailed Hawk,med,med,med,med,Glenn Johnson
+Great Horned Owl,high,high,high,high,Glenn Johnson
+Barred Owl,high,high,high,high,Glenn Johnson
+Belted Kingfisher,low,low,low,low,Glenn Johnson
+Yellow-bellied Sapsucker,high,high,high,high,Glenn Johnson
+Red-bellied Woodpecker,high,high,high,high,Glenn Johnson
+Downy Woodpecker,high,high,high,high,Glenn Johnson
+Hairy Woodpecker,high,high,high,high,Glenn Johnson
+Pileated Woodpecker,high,high,high,high,Glenn Johnson
+Northern Flicker,low,low,low,low,Glenn Johnson
+American Kestrel,low,low,low,low,Glenn Johnson
+Merlin,low,low,low,low,Glenn Johnson
+Peregrine Falcon,low,low,low,low,Glenn Johnson
+Olive-sided Flycatcher,low,low,low,low,Glenn Johnson
+Eastern Wood-Pewee,high,high,high,high,Glenn Johnson
+Yellow-bellied Flycatcher,low,low,low,low,Glenn Johnson
+Alder Flycatcher,low,low,low,low,Glenn Johnson
+Willow Flycatcher,low,low,low,low,Glenn Johnson
+Least Flycatcher,high,high,high,high,Glenn Johnson
+Eastern Phoebe,low,low,low,low,Glenn Johnson
+Great Crested Flycatcher,med,med,med,med,Glenn Johnson
+Eastern Kingbird,low,low,low,low,Glenn Johnson
+Yellow-throated Vireo,high,high,high,high,Glenn Johnson
+Blue-headed Vireo,high,high,high,high,Glenn Johnson
+Warbling Vireo,high,high,high,high,Glenn Johnson
+Red-eyed Vireo,high,high,high,high,Glenn Johnson
+Canada Jay,high,high,high,high,Glenn Johnson
+Blue Jay,high,high,high,high,Glenn Johnson
+American Crow,med,med,med,med,Glenn Johnson
+Common Raven,high,high,high,high,Glenn Johnson
+Black-capped Chickadee,high,high,high,high,Glenn Johnson
+Tufted Titmouse,high,high,high,high,Glenn Johnson
+Horned Lark,low,low,low,low,Glenn Johnson
+Tree Swallow,low,low,low,low,Glenn Johnson
+Purple Martin,low,low,low,low,Glenn Johnson
+Barn Swallow,low,low,low,low,Glenn Johnson
+Cliff Swallow,low,low,low,low,Glenn Johnson
+Ruby-crowned Kinglet,high,high,high,high,Glenn Johnson
+Golden-crowned Kinglet,high,high,high,high,Glenn Johnson
+White-breasted Nuthatch,high,high,high,high,Glenn Johnson
+Red-breasted Nuthatch,high,high,high,high,Glenn Johnson
+Brown Creeper,high,high,high,high,Glenn Johnson
+Northern House Wren,med,med,med,med,Glenn Johnson
+Winter Wren,high,high,high,high,Glenn Johnson
+Marsh Wren,low,low,low,low,Glenn Johnson
+Carolina Wren,med,med,med,med,Glenn Johnson
+European Starling,low,low,low,low,Glenn Johnson
+Gray Catbird,low,low,low,low,Glenn Johnson
+Brown Thrasher,low,low,low,low,Glenn Johnson
+Eastern Bluebird,low,low,low,low,Glenn Johnson
+Veery,high,high,high,high,Glenn Johnson
+Swainson's Thrush,high,high,high,high,Glenn Johnson
+Hermit Thrush,high,high,high,high,Glenn Johnson
+Wood Thrush,high,high,high,high,Glenn Johnson
+American Robin,med,med,med,med,Glenn Johnson
+Cedar Waxwing,med,med,med,med,Glenn Johnson
+House Sparrow,low,low,low,low,Glenn Johnson
+American Pipit,low,low,low,low,Glenn Johnson
+Evening Grosbeak,high,high,high,high,Glenn Johnson
+House Finch,low,low,low,low,Glenn Johnson
+Purple Finch,med,med,low,low,Glenn Johnson
+Red Crossbill,high,NA,NA,NA,Glenn Johnson
+Pine Siskin,high,NA,NA,NA,Glenn Johnson
+American Goldfinch,low,low,low,low,Glenn Johnson
+Chipping Sparrow,low,low,low,low,Glenn Johnson
+Field Sparrow,low,low,low,low,Glenn Johnson
+Dark-eyed Junco,med,med,med,med,Glenn Johnson
+White-crowned Sparrow,low,low,low,low,Glenn Johnson
+White-throated Sparrow,med,med,med,med,Glenn Johnson
+Savannah Sparrow,low,low,low,low,Glenn Johnson
+Song Sparrow,low,low,low,low,Glenn Johnson
+Lincoln's Sparrow,low,low,low,low,Glenn Johnson
+Swamp Sparrow,low,low,low,low,Glenn Johnson
+Eastern Towhee,med,med,med,med,Glenn Johnson
+Bobolink,low,low,low,low,Glenn Johnson
+Eastern Meadowlark,low,low,low,low,Glenn Johnson
+Baltimore Oriole,high,high,high,high,Glenn Johnson
+Red-winged Blackbird,low,low,low,low,Glenn Johnson
+Brown-headed Cowbird,low,low,low,low,Glenn Johnson
+Rusty Blackbird,low,low,low,low,Glenn Johnson
+Common Grackle,low,low,low,low,Glenn Johnson
+Ovenbird,high,high,high,high,Glenn Johnson
+Northern Waterthrush,med,med,med,med,Glenn Johnson
+Golden-winged Warbler,med,med,med,med,Glenn Johnson
+Black-and-white Warbler,high,high,high,high,Glenn Johnson
+Tennessee Warbler,high,high,high,high,Glenn Johnson
+Nashville Warbler,high,high,high,high,Glenn Johnson
+Mourning Warbler,high,high,high,high,Glenn Johnson
+Common Yellowthroat,low,low,low,low,Glenn Johnson
+American Redstart,high,high,high,high,Glenn Johnson
+Cape May Warbler,high,high,high,high,Glenn Johnson
+Northern Parula,high,high,high,high,Glenn Johnson
+Magnolia Warbler,high,high,high,high,Glenn Johnson
+Bay-breasted Warbler,high,high,high,high,Glenn Johnson
+Blackburnian Warbler,high,high,high,high,Glenn Johnson
+Yellow Warbler,low,low,low,low,Glenn Johnson
+Chestnut-sided Warbler,med,med,med,med,Glenn Johnson
+Blackpoll Warbler,high,high,high,high,Glenn Johnson
+Black-throated Blue Warbler,high,high,high,high,Glenn Johnson
+Palm Warbler,med,med,med,med,Glenn Johnson
+Pine Warbler,med,med,med,med,Glenn Johnson
+Yellow-rumped Warbler,high,high,high,high,Glenn Johnson
+Black-throated Green Warbler,high,high,high,high,Glenn Johnson
+Canada Warbler,high,high,high,high,Glenn Johnson
+Scarlet Tanager,high,high,high,high,Glenn Johnson
+Northern Cardinal,med,med,med,med,Glenn Johnson
+Rose-breasted Grosbeak,high,high,high,high,Glenn Johnson
+Indigo Bunting,low,low,low,low,Glenn Johnson

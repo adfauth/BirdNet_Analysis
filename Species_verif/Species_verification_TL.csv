@@ -1,0 +1,174 @@
+﻿Species,Forest,Summer,Fall,Spring
+Snow Goose,Low,Low,Medium,Medium
+Canada Goose,Low,High,High,High
+Mute Swan,Low,Medium,Medium,Medium
+Wood Duck,Medium,High,High,High
+Blue-winged Teal,Low,Low,Medium,Medium
+Northern Shoveler,Low,Low,Medium,Medium
+Gadwall,Low,Low,Medium,Medium
+American Wigeon,Low,High,High,High
+Mallard,Low,High,High,High
+American Black Duck,Low,High,High,High
+Northern Pintail,Low,Low,Medium,Medium
+Green-winged Teal,Low,High,High,High
+Redhead,Low,Low,Medium,Medium
+Ring-necked Duck,Low,High,High,High
+Greater Scaup,Low,Low,Medium,Medium
+Lesser Scaup,Low,Low,Medium,Medium
+Common Goldeneye,Low,Low,Medium,Medium
+Hooded Merganser,Low,High,High,High
+Common Merganser,Low,High,High,High
+Red-breasted Merganser,Low,Low,Medium,Medium
+Wild Turkey,High,High,High,High
+Ruffed Grouse,High,High,High,High
+Rock Pigeon,Low,High,High,High
+Mourning Dove,Low,Medium,Medium,Medium
+Black-billed Cuckoo,Medium,Medium,Low,Low
+Chimney Swift,Medium,High,High,High
+Ruby-throated Hummingbird,Medium,High,High,High
+Virginia Rail,Low,Medium,Medium,Medium
+Common Gallinule,Low,Medium,Medium,Medium
+American Coot,Low,Low,Low,Low
+Black-bellied Plover,Low,Low,Low,Low
+Killdeer,Low,High,High,High
+Semipalmated Plover,Low,Low,Medium,Medium
+American Woodcock,Low,High,Medium,Medium
+Wilson's Snipe,Low,High,High,High
+Spotted Sandpiper,Low,High,High,High
+Solitary Sandpiper,Low,Low,Medium,Medium
+Lesser Yellowlegs,Low,Low,Medium,Medium
+Greater Yellowlegs,Low,Low,Medium,Medium
+Least Sandpiper,Low,Low,Medium,Medium
+Pectoral Sandpiper,Low,Low,Medium,Medium
+Semipalmated Sandpiper,Low,Low,Medium,Medium
+Bonaparte's Gull,Low,Low,Medium,Medium
+Ring-billed Gull,Low,High,High,High
+American Herring Gull,Low,High,High,High
+Great Black-backed Gull,Low,High,Low,Low
+Caspian Tern,Low,Medium,Medium,Medium
+Black Tern,Low,Medium,Medium,Medium
+Common Tern,Low,High,High,High
+Pied-billed Grebe,Low,High,High,High
+Red-necked Grebe,Low,Low,Low,Low
+Common Loon,Low,Medium,Medium,Medium
+Double-crested Cormorant,Low,High,High,High
+American Bittern,Low,High,High,High
+Green Heron,Low,High,High,High
+Great Egret,Low,High,High,High
+Great Blue Heron,Low,High,High,High
+Turkey Vulture,Medium,Medium,High,High
+Osprey,Low,High,High,High
+Sharp-shinned Hawk,Medium,High,High,High
+Cooper's Hawk,Medium,High,High,High
+Northern Harrier,Low,High,High,High
+Bald Eagle,Low,High,High,High
+Broad-winged Hawk,High,High,High,High
+Red-shouldered Hawk,Medium,Medium,Medium,Medium
+Red-tailed Hawk,Medium,High,High,High
+Great Horned Owl,High,High,High,High
+Barred Owl,High,High,High,High
+Belted Kingfisher,Low,High,High,High
+Yellow-bellied Sapsucker,High,High,High,High
+Red-bellied Woodpecker,Medium,Medium,Medium,Medium
+Downy Woodpecker,High,High,High,High
+Hairy Woodpecker,High,High,High,High
+Pileated Woodpecker,High,High,High,High
+Northern Flicker,High,High,High,High
+American Kestrel,Low,High,High,High
+Merlin,Low,High,High,High
+Peregrine Falcon,Low,Medium,Medium,Medium
+Olive-sided Flycatcher,Medium,High,High,Low
+Eastern Wood-Pewee,High,High,High,High
+Yellow-bellied Flycatcher,Medium,Medium,Low,Low
+Alder Flycatcher,Low,High,High,Low
+Willow Flycatcher,Low,High,High,High
+Least Flycatcher,High,High,High,High
+Eastern Phoebe,High,High,High,High
+Great Crested Flycatcher,High,High,High,High
+Eastern Kingbird,High,High,High,High
+Yellow-throated Vireo,High,High,High,High
+Blue-headed Vireo,High,Medium,High,High
+Warbling Vireo,High,High,High,High
+Red-eyed Vireo,High,High,High,High
+Canada Jay,Medium,Medium,Medium,Medium
+Blue Jay,High,High,High,High
+American Crow,High,High,High,High
+Common Raven,High,High,High,High
+Black-capped Chickadee,High,High,High,High
+Tufted Titmouse,Low,Low,Low,Low
+Horned Lark,Low,High,Low,High
+Tree Swallow,Low,High,High,High
+Purple Martin,Low,High,High,High
+Barn Swallow,Low,High,High,High
+Cliff Swallow,Low,High,High,High
+Ruby-crowned Kinglet,High,Medium,High,High
+Golden-crowned Kinglet,High,Medium,High,High
+White-breasted Nuthatch,High,High,High,High
+Red-breasted Nuthatch,High,High,High,High
+Brown Creeper,High,High,High,High
+Northern House Wren,High,High,High,High
+Winter Wren,High,High,High,High
+Marsh Wren,Low,High,High,High
+Carolina Wren,Medium,Medium,Medium,Medium
+European Starling,High,High,High,High
+Gray Catbird,High,High,High,High
+Brown Thrasher,High,High,High,High
+Eastern Bluebird,High,High,High,High
+Veery,High,High,High,High
+Swainson's Thrush,Medium,Medium,Low,Medium
+Hermit Thrush,High,High,High,High
+Wood Thrush,High,High,High,High
+American Robin,High,High,High,High
+Cedar Waxwing,High,High,High,High
+House Sparrow,Low,High,High,High
+American Pipit,Low,Low,Medium,Medium
+Evening Grosbeak,Medium,Medium,Low,Medium
+House Finch,Low,High,High,High
+Purple Finch,High,High,High,High
+Red Crossbill,Medium,Low,Medium,Medium
+Pine Siskin,Medium,Low,Medium,Medium
+American Goldfinch,Medium,High,High,High
+Chipping Sparrow,Low,High,High,High
+Field Sparrow,Low,Low,Low,Low
+Dark-eyed Junco,High,High,High,High
+White-crowned Sparrow,High,High,High,High
+White-throated Sparrow,High,Low,High,High
+Savannah Sparrow,Low,High,High,High
+Song Sparrow,Low,High,High,High
+Lincoln's Sparrow,Low,High,High,High
+Swamp Sparrow,Low,High,High,High
+Eastern Towhee,High,High,High,High
+Bobolink,Low,High,High,High
+Eastern Meadowlark,Low,High,High,High
+Baltimore Oriole,High,High,High,High
+Red-winged Blackbird,Low,High,High,High
+Brown-headed Cowbird,High,High,High,High
+Rusty Blackbird,Medium,Low,High,High
+Common Grackle,High,High,High,High
+Ovenbird,High,High,High,High
+Northern Waterthrush,Medium,Medium,Medium,Medium
+Golden-winged Warbler,Medium,Medium,Medium,Medium
+Black-and-white Warbler,High,High,High,High
+Tennessee Warbler,High,Low,High,High
+Nashville Warbler,Medium,Medium,High,High
+Mourning Warbler,Medium,Medium,Medium,Medium
+Common Yellowthroat,Low,High,High,High
+American Redstart,High,High,High,High
+Cape May Warbler,Medium,Low,Medium,Medium
+Northern Parula,High,Low,High,High
+Magnolia Warbler,Medium,Medium,Medium,Medium
+Bay-breasted Warbler,High,Low,High,High
+Blackburnian Warbler,High,High,High,High
+Yellow Warbler,High,High,High,High
+Chestnut-sided Warbler,High,High,High,High
+Blackpoll Warbler,Medium,Medium,Medium,Medium
+Black-throated Blue Warbler,High,High,High,High
+Palm Warbler,High,High,High,High
+Pine Warbler,High,High,High,High
+Yellow-rumped Warbler,High,High,High,High
+Black-throated Green Warbler,High,High,High,High
+Canada Warbler,Medium,Medium,Medium,Medium
+Scarlet Tanager,High,High,High,High
+Northern Cardinal,High,High,High,High
+Rose-breasted Grosbeak,High,High,High,High
+Indigo Bunting,Medium,Medium,Medium,Medium
