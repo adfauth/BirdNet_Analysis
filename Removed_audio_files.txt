@@ -45,6 +45,19 @@ AM0052:
 
 sftp://adfaut22@ada.hpc.stlawu.edu/home/adfaut22/AM0052/20250809/20250809_062100.WAV
 
+AM0059:
+
+sftp://adfaut22@ada.hpc.stlawu.edu/home/adfaut22/AM0059/20250814/20250814_012500.WAV
+sftp://adfaut22@ada.hpc.stlawu.edu/home/adfaut22/AM0059/20250814/20250814_012600.WAV
+sftp://adfaut22@ada.hpc.stlawu.edu/home/adfaut22/AM0059/20250814/20250814_050600.WAV
+sftp://adfaut22@ada.hpc.stlawu.edu/home/adfaut22/AM0059/20250814/20250814_050700.WAV
+sftp://adfaut22@ada.hpc.stlawu.edu/home/adfaut22/AM0059/20250814/20250814_050800.WAV
+
+A024_SD004:
+
+sftp://adfaut22@ada.hpc.stlawu.edu/home/adfaut22/A024_SD004/20250818/20250818_051400.WAV
+sftp://adfaut22@ada.hpc.stlawu.edu/home/adfaut22/A024_SD004/20250818/20250818_052000.WAV
+
 
 
 
