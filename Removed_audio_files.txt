@@ -40,6 +40,7 @@ sftp://adfaut22@ada.hpc.stlawu.edu/home/adfaut22/A019_SD022/20250715/20250715_05
 A017_SD017:
 
 sftp://adfaut22@ada.hpc.stlawu.edu/home/adfaut22/A017_SD017/20250714/20250714_120600.WAV
+sftp://adfaut22@ada.hpc.stlawu.edu/home/adfaut22/A017_SD017/20250623/20250623_124102.WAV
 
 AM0052:
 
