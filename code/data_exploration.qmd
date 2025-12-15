@@ -1,0 +1,61 @@
+---
+title: "Exploring data"
+format: html
+---
+## Note:
+
+This file is exploring the compiled data set of all the baggie/case audio moths. Once the deployment information is updated, this can be merged to create the final data set used in the analysis.
+
+## Set up
+
+```{r}
+rm(list = ls())
+library(tidyverse)
+library(here)
+results <- read_csv(here("data/birdnet_results.csv"))
+```
+
+Before exploration let's fix `date_time` and `time` to include seconds. Add `start` as the value.
+
+```{r}
+results <- results |> mutate(date_time = date_time + seconds(start), 
+time = time + start)
+```
+
+## Exploring the data
+
+Let's first look at the df
+
+```{r}
+glimpse(results)
+```
+
+Now let's get some basic info and summary statistics
+
+```{r}
+# number of ids for each AM
+results |> group_by(id) |> 
+    summarise(num_ids = n(),
+    mean_prob = mean(probability)) |> 
+    arrange(desc(num_ids))|> 
+    print(n = 30)
+
+# species richness for each AM
+results |> group_by(id) |> 
+    summarise(num_species = n_distinct(species)) |>
+    arrange(desc(num_species))|> 
+    print(n = 30)
+
+# time span before retrieval/failure
+results |> group_by(id) |> 
+    summarise(timespan = max(date_time) - min(date_time)) |> 
+    arrange(desc(timespan))|> 
+    print(n = 30)
+```
+
+
+
+
+
+
+
