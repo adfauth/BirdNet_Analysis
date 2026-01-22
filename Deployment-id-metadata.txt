@@ -1,0 +1,7 @@
+1/22/26
+
+This file explains the steps taken to update the output file names from BirdNET that were not yet logged in the master spreadsheet.
+
+Some AMs were labelled "A###_SD###" because the data was analyzed by BirdNET before a unique deployment ID was made and it was entered into the master spreadsheet.
+
+Once all the AMs were added to the deployment sheet, I went back and updated the names of each individual output file with its new deployment ID. Now, when the data is merged in R with the deployment spreadsheet, they can easily be combined.

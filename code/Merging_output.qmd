@@ -66,4 +66,3 @@ write.csv(main_df, here("data/birdnet_results.csv"))
 ## Unite with Audio Moth Deployments
 
 Take a look at the deployment df
-
