@@ -60,9 +60,6 @@ main_df <- temp_df |> mutate(date = str_sub(file, start = 1, end = 8),
 ## write csv
 
 ```{r}
-write.csv(main_df, here("data/birdnet_results.csv"))
+write_csv(main_df, here("data/birdnet_results.csv"))
 ```
 
-## Unite with Audio Moth Deployments
-
-Take a look at the deployment df
