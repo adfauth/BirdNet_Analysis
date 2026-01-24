@@ -1,0 +1,140 @@
+---
+title: "Preliminary Analysis"
+format: html
+---
+
+## Goal:
+
+This document looks to continue to explore/vizualize the results of the baggie/case experiment and look at some preliminary analyses.
+
+## Set up
+
+```{r}
+rm(list = ls())
+library(tidyverse)
+library(here)
+```
+
+## Load in Data
+
+```{r}
+birdnet <- read_csv(here("data/updated_birdnet_results.csv"))
+deploy <- read_csv(here("data/Updated_baggie_case_deployments.csv"))
+```
+
+#### Merge dataframes
+
+```{r}
+merged <- left_join(deploy, birdnet, join_by("deployment_num" == "id"))
+glimpse(merged)
+```
+
+Note: there will be some rows that only have deployment info because two of the audio moths failed
+
+We know that one of the deployments failed because of user error.
+
+We can remove that one because it does not have to do with durability:
+
+```{r}
+cleaned <- merged |> filter(deployment_num != "AM0100") # the known AM with user error
+```
+
+## Basic Info
+
+How many identifications?
+
+```{r}
+cleaned |> filter(!is.na(probability)) |> 
+    summarise(count = n())
+```
+
+Number of Species:
+
+```{r}
+unique(cleaned$species) |> length()
+```
+
+Duration of recording for each AM:
+
+They are in only some of the deployment notes -> need to update spreadsheet
+
+Number of ids per audiomoth and number of species
+
+```{r}
+cleaned |> group_by(deployment_num) |> 
+    summarise(id_count = n(), 
+    species_count = n_distinct(species)) |> 
+        print(n = 30)
+```
+
+Number of ids and number of species within each housing group
+
+```{r}
+cleaned |> group_by(AM_housing) |> 
+    summarise(id_count = n(), 
+    species_count = n_distinct(species))
+```
+
+Mean and sd of ids and species in each housing group
+
+```{r}
+cleaned |> group_by(AM_housing, deployment_num) |> 
+    summarise(id_count = n(), 
+    species_count = n_distinct(species)) |> 
+        ungroup() |> 
+        group_by(AM_housing) |> 
+        summarise(mean_id = mean(id_count),
+        sd_id = sd(id_count),
+        mean_sp = mean(species_count),
+        sd_sp = sd(species_count))
+```
+
+## Plots:
+
+Comparison of ids and sp for each housing group:
+
+```{r}
+dist_housing <- cleaned |> 
+    group_by(AM_housing, deployment_num) |> 
+    summarise(count = n(),
+    num_sp = n_distinct(species))
+
+# id plot
+ggplot(dist_housing, 
+aes(fct_reorder(deployment_num, count), count, fill = AM_housing))+
+    geom_col()+
+    coord_flip()+
+    labs(y = "Number of IDs",
+    x = "Deployment ID")
+    theme_minimal()
+
+# species plot
+ggplot(dist_housing, 
+aes(fct_reorder(deployment_num, num_sp), num_sp, fill = AM_housing))+
+    geom_col()+
+    coord_flip()+
+    labs(y = "Number of Species",
+    x = "Deployment ID")
+    theme_minimal()
+```
+
+Side-by-side boxplots for ids and species:
+
+```{r}
+# IDs
+ggplot(dist_housing, aes(AM_housing, count, color = AM_housing))+
+    geom_boxplot()+
+    geom_point(alpha = 0.5)+
+    theme_minimal()
+# Species
+ggplot(dist_housing, aes(AM_housing, num_sp, color = AM_housing))+
+    geom_boxplot()+
+    geom_point(alpha = 0.5)+
+    theme_minimal()
+```
+
+
+
+
+
+
