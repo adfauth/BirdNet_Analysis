@@ -57,7 +57,14 @@ cleaned2 <- cleaned |>
 
 ```{r}
 paired <- cleaned2 |> filter(paired == "y") |> 
-    group_by(paired_site)
+    group_by(deployment_num) |> 
+    mutate(id_count = n(), 
+    species_count = n_distinct(species)) |> 
+    group_by(paired_site) |> 
+    summarise(diff_id = max(id_count) - min(id_count),
+    diff_sp = max(species_count) - min(species_count))  
+
+paired
 ```
 
 ## Basic Info
