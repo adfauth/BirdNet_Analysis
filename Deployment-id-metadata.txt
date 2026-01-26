@@ -1,7 +1,13 @@
-1/22/26
+1/22/26, 1/24/26, 1/26/26
 
-This file explains the steps taken to update the output file names from BirdNET that were not yet logged in the master spreadsheet.
+This file explains the edits made to the original deployment sheet and the BirdNET output that was used in the baggie/case experiment and the riparian project. The output file names were edited from the original BirdNET output becasue they were not yet logged in the master spreadsheet.
 
 Some AMs were labelled "A###_SD###" because the data was analyzed by BirdNET before a unique deployment ID was made and it was entered into the master spreadsheet.
 
 Once all the AMs were added to the deployment sheet, I went back and updated the names of each individual output file with its new deployment ID. Now, when the data is merged in R with the deployment spreadsheet, they can easily be combined.
+
+The columns were added to the deployment data to reflect whether they were paired and with which AM they were paired with (for the baggie/case experiment). For both the baggie/case and riaparian, a column was added to reflect the last recording date using the card upload notes or looking back into the original directories to see the last folder on the sd card. These dates where then standardized for easy manipulation in R and used to calculate the duration the AMs were recording. 
+
+Baggie/case:
+
+In addition to the paired information, I added a new column, "paired_site" that used an abbrievated version of the "site subname" to describe the common site between paired AMs. If a given AM was not paired, then it got a blank/NA. This was done so that there is a distinct shared identifier between the pairs.
