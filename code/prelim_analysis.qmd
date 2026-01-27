@@ -42,7 +42,7 @@ cleaned <- merged |> filter(deployment_num != "AM0100") # the known AM with user
 #### Calculate the duration variable
 
 ```{r}
-cleaned2 <- cleaned |> 
+cleaned <- cleaned |> 
     mutate(last_record = mdy(last_record),
     dropoff_date = dmy(dropoff_date),
     pickup_date = dmy(pickup_date)) |> 
@@ -56,16 +56,65 @@ cleaned2 <- cleaned |>
 ## Paired data:
 
 ```{r}
-paired <- cleaned2 |> filter(paired == "y") |> 
+rich_and_ids <- cleaned |> filter(paired == "y") |> 
     group_by(deployment_num) |> 
-    mutate(id_count = n(), 
-    species_count = n_distinct(species)) |> 
-    group_by(paired_site) |> 
-    summarise(diff_id = max(id_count) - min(id_count),
-    diff_sp = max(species_count) - min(species_count))  
+    summarise(id_count = n(), 
+    species_count = n_distinct(species))
 
-paired
+deploy_cleaned <- deploy |> 
+    filter(deployment_num != "AM0100") |> 
+    mutate(last_record = mdy(last_record),
+    dropoff_date = dmy(dropoff_date),
+    pickup_date = dmy(pickup_date)) |> 
+    group_by(deployment_num) |> 
+    mutate(duration = last_record - dropoff_date,
+    deploymet_len = pickup_date - dropoff_date) |> 
+    ungroup() |> 
+    mutate(duration = replace(duration, deployment_num == "AM0057", 0)) |> 
+    ungroup() 
+    
+    
+paired <- deploy_cleaned |> filter(paired == "y") |> 
+    select(deployment_num, AM_housing, paired_site) |> 
+    left_join(rich_and_ids, join_by("deployment_num" == "deployment_num")) |> 
+    mutate(across(c(id_count, species_count), ~replace_na(., 0)))|> 
+    pivot_wider(id_cols = paired_site, names_from = AM_housing,
+    values_from = c(id_count, species_count)) |> 
+        mutate(diff_detect = id_count_Case - id_count_Ziplock,
+        diff_SR = species_count_Case - species_count_Ziplock)
+        
 ```
+
+
+#### Statistical test
+
+Since we have a low number of replicates, we will use a Wilcoxon Signed Rank Test
+
+```{r}
+wilcox.test(paired$id_count_Case, paired$id_count_Ziplock)
+
+wilcox.test(paired$species_count_Case, paired$species_count_Ziplock)
+```
+
+Not significant, but there still might be a trend
+
+### Plot
+
+species richness
+```{r}
+# data for plot
+paired_plot <- deploy_cleaned |> filter(paired == "y") |> 
+    select(deployment_num, AM_housing, paired_site) |> 
+    left_join(rich_and_ids, join_by("deployment_num" == "deployment_num")) |> 
+    mutate(across(c(id_count, species_count), ~replace_na(., 0)))
+
+ggplot(paired_plot, aes(AM_housing, species_count, group = paired_site))+
+    geom_point(aes(color = AM_housing))+
+    geom_line()+
+    theme_minimal()
+```
+
+total detections
 
 ## Basic Info
 
@@ -161,6 +210,8 @@ ggplot(dist_housing, aes(AM_housing, num_sp, color = AM_housing))+
     theme_minimal()
 ```
 
+
+## Durability analysis
 
 
 
