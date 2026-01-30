@@ -68,7 +68,7 @@ deploy_cleaned <- deploy |>
     pickup_date = dmy(pickup_date)) |> 
     group_by(deployment_num) |> 
     mutate(duration = last_record - dropoff_date,
-    deploymet_len = pickup_date - dropoff_date) |> 
+    deployment_len = pickup_date - dropoff_date) |> 
     ungroup() |> 
     mutate(duration = replace(duration, deployment_num == "AM0057", 0)) |> 
     ungroup() 
@@ -211,9 +211,59 @@ ggplot(dist_housing, aes(AM_housing, num_sp, color = AM_housing))+
 ```
 
 
+## Non-Paired Comparison
+
+Use linear mixed effects models to take into account the the paired sites
+
+Grassland: get rid of for bigger analysis
+
 ## Durability analysis
 
+Use linear mixed effects models to take into account the paired sites. Predict the proportion of time the AM was working (working divided by length of deployment) to standardize based on deployment length
 
+Is it worth doing a survival analysis? Saw something that it would be appriopriate for these kinds of data.
 
+After talking to erika -- find battery life from config file and use that proportion as response.
 
+Can we assume all the batteries were fully charged?
+
+#### Preliminary Plot
+
+```{r}
+deploy_durability <- deploy |> mutate(last_record = mdy(last_record),
+    dropoff_date = dmy(dropoff_date),
+    pickup_date = dmy(pickup_date)) |> 
+    group_by(deployment_num) |> 
+    reframe(duration = last_record - dropoff_date,
+    deployment_len = pickup_date - dropoff_date,
+    durability_ratio = as.numeric(duration)/as.numeric(deployment_len),
+    AM_housing = AM_housing) |> 
+    ungroup() |> 
+    mutate(durability_ratio = replace(durability_ratio, 
+    deployment_num == "AM0057", 0)) # for the one with total failure
+    
+ggplot(deploy_durability, aes(AM_housing, durability_ratio, color = AM_housing))+
+    geom_boxplot()+
+    geom_point(alpha = 0.5)+
+    theme_minimal()
+```
+
+Question: How should we think about/quantify the AM with no data on the card. 
+
+#### Number of IDs vs. Duration of Recording
+
+Color by baggie and case
+
+```{r}
+id_dr_plot <- cleaned |> group_by(deployment_num) |> 
+    reframe(id_count = n(), 
+    species_count = n_distinct(species),
+    AM_housing = first(AM_housing))
+
+ggplot(id_dr_plot, aes())
+```
+
+## accumulation curve for ids and species richness
+
+Does the baggie group get you there quicker?
 
