@@ -1,0 +1,1 @@
+This repository contains the files used in a experiemnt testing differences in species detection and durability based on two different AudioMoth (acoustic recorder) enclosures (Ziplock bags and manufactured cases). 
