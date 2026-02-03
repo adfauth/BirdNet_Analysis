@@ -39,7 +39,7 @@ We can remove that one because it does not have to do with durability:
 cleaned <- merged |> filter(deployment_num != "AM0100") # the known AM with user error
 ```
 
-#### Calculate the duration variable
+#### Calculate the duration variable and battery-life
 
 ```{r}
 cleaned <- cleaned |> 
@@ -50,7 +50,9 @@ cleaned <- cleaned |>
     mutate(duration = last_record - dropoff_date,
     deploymet_len = pickup_date - dropoff_date) |> 
     ungroup() |> 
-    mutate(duration = replace(duration, deployment_num == "AM0057", 0)) # the recorder that failed without known cause
+    mutate(E_battery_life = rep(2500/60, nrow(cleaned)),
+    diff_E_bat = E_battery_life - duration, 
+    duration = replace(duration, deployment_num == "AM0057", 0)) # the recorder that failed without known cause
 ```
 
 ## Paired data:
