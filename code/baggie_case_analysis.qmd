@@ -1,0 +1,27 @@
+---
+title: "Exploring data"
+format: html
+---
+## Introduction
+
+This document contains the final analysis for the baggie case paper. The starting point will be the outline of the result section that I have already written, and as analysis reveals insight/new questions, I will add/subtract from there. I will start by calculating some general statistics about the data and the sampling effort. Then, I will look at paired data subset, first by creating a data frame that will be used in all the possible analyses for those data. After, I will continue with the analysis for the whole project. 
+
+## Set up
+
+Let's load in the necessary packages and the merged data file (containing both deployment data and BirdNET output).
+
+```{r}
+rm(list = ls())
+library(tidyverse)
+library(here)
+merged <- read_csv(here("data/merged_deployment_birdnet.csv"))
+```
+
+Let's take a look at the structure:
+
+```{r}
+glimpse(merged)
+```
+
+
+
