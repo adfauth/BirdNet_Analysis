@@ -50,7 +50,7 @@ temp_df <- bind_rows(cleaned_list)
 main_df <- temp_df |> mutate(date = str_sub(file, start = 1, end = 8),
           hour = str_sub(file, 10, 11),
           minute = str_sub(file, 12, 13),
-          second = str_sub(file, 14, 15)) |>
+          second = start) |>
   unite("date_time", c("date", "hour", "minute", "second"), sep = ":") |>
   mutate(date_time = ymd_hms(date_time),
           time = as_hms(date_time))
@@ -66,13 +66,17 @@ write_csv(main_df, here("data/birdnet_results.csv"))
 
 ## Merge with deployment data
 
-#### Load in deployment data
-
 ```{r}
 deploy <- read_csv(here("data/Updated_baggie_case_deployments.csv"))
 ```
 
 ```{r}
-merged <- left_join(deploy, birdnet, join_by("deployment_num" == "id"))
+merged <- left_join(deploy, main_df, join_by("deployment_num" == "id"))
 glimpse(merged)
+```
+
+#### Write merged csv
+
+```{r}
+write_csv(merged, here("data/merged_deployment_birdnet.csv"))
 ```
