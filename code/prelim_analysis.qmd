@@ -18,7 +18,7 @@ library(here)
 ## Load in Data
 
 ```{r}
-birdnet <- read_csv(here("data/updated_birdnet_results.csv"))
+birdnet <- read_csv(here("data/birdnet_results.csv"))
 deploy <- read_csv(here("data/Updated_baggie_case_deployments.csv"))
 ```
 

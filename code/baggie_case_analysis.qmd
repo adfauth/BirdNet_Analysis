@@ -35,7 +35,8 @@ There are some variables to add to the data frame:
 
  - battery_life: stores the expected battery life based on the config file (same for every AM)
 
- - *sd_full: amount of time expected to fill the sd card based on card size and config file*
+ - *gb_full: amount of time expected to fill the sd card based on card size and config file*
+     - *Would have added sd_full variable but the battery seems like the limiting factor (regardless of the 64 GB or 256 GB cards)*
 
 ```{r}
 # save recording length and battery life as new variables
@@ -43,7 +44,7 @@ merged <- merged |> mutate(dropoff_date = dmy(dropoff_date),
 last_record = mdy(last_record),
 record_len = last_record - dropoff_date,
 battery_life = rep(2500/60, nrow(merged)), # 2500 mAh with a daily usage of 60 mAh based on config
-files_per_d = rep(1.162, nrow(merged))) |> # GB used per day based on config
+gb_per_d = rep(1.162, nrow(merged))) |> # GB used per day based on config
 filter(deployment_num != "AM0100") # the known AM with user error
 
 # add these same variables to the deployment data (also change pick up data type):
@@ -51,12 +52,14 @@ deploy <- deploy |> mutate(dropoff_date = dmy(dropoff_date),
 last_record = mdy(last_record),
 record_len = last_record - dropoff_date,
 battery_life = rep(2500/60, nrow(deploy)),
-files_per_d = rep(1.162, nrow(merged)),
-pickup_date = dmy(pickup_date))
+gb_per_d = rep(1.162, nrow(deploy)),
+pickup_date = dmy(pickup_date))|> 
+filter(deployment_num != "AM0100") 
 
 glimpse(merged)
 glimpse(deploy)
 ```
+
 
 Total nights of deployment and nights of recording:
 
@@ -102,9 +105,119 @@ merged |> group_by(AM_housing, deployment_num) |>
         summarise(mean_ids = mean(total_ids),
         sd_ids = sd(total_ids),
         mean_sp = mean(total_sp),
-        sd_sp = sd(total_sp))
+        sd_sp = sd(total_sp)) |> 
+            pander()
 ```
 
+## Paired Analysis
+
+Here the analysis will focus on the subset of deployments that included two AMs at the same site.
+
+Let's create the data frame needed for the paired analysis:
+
+```{r}
+# create a dataset that has the species richness and total IDs for each AM
+rich_and_ids <- merged |> filter(paired == "y") |> 
+    group_by(deployment_num) |> 
+    summarise(id_count = sum(!is.na(probability)),
+    species_count = n_distinct(species, na.rm = T))
+
+# merge the deployment 
+paired <- deploy |> filter(paired == "y") |> 
+    select(deployment_num, AM_housing, paired_site) |> 
+    left_join(rich_and_ids, join_by("deployment_num" == "deployment_num")) |> 
+    mutate(across(c(id_count, species_count), ~replace_na(., 0)))|> 
+    pivot_wider(id_cols = paired_site, names_from = AM_housing,
+    values_from = c(id_count, species_count)) |> 
+        mutate(diff_detect = id_count_Case - id_count_Ziplock,
+        diff_SR = species_count_Case - species_count_Ziplock)
+```
+
+#### Statistical test
+
+Since we have a low number of replicates, we will use a Wilcoxon Signed Rank Test
+
+```{r}
+wilcox.test(paired$id_count_Case, paired$id_count_Ziplock)
+
+wilcox.test(paired$species_count_Case, paired$species_count_Ziplock)
+```
+
+Not significant, but there still might be a trend
+
+#### Plot
+
+species richness
+```{r}
+# data for plot
+paired_plot <- deploy |> filter(paired == "y") |> 
+    select(deployment_num, AM_housing, paired_site) |> 
+    left_join(rich_and_ids, join_by("deployment_num" == "deployment_num")) |> 
+    mutate(across(c(id_count, species_count), ~replace_na(., 0)))
+
+# species richness
+ggplot(paired_plot, aes(AM_housing, species_count, group = paired_site))+
+    geom_point(aes(color = AM_housing))+
+    geom_line()+
+    theme_minimal()
+
+# total ids
+ggplot(paired_plot, aes(AM_housing, id_count, group = paired_site))+
+    geom_point(aes(color = AM_housing))+
+    geom_line()+
+    theme_minimal()
+```
+
+## Durability Analysis
+
+Due to the estimation by the configuration app based on our config file, we know that the batteries will last around 41.67 days and we used 1.162 GB on the SD card per day. Since the SD cards were either 64 GB or 256 GB, the batteries are the clear limiting factor on how long we would predict the AM to last. Therefore, for our durability analysis, our response variable will be the percentage of days that the AM lasted based on our expected battery life.
+
+Let's add this variable to the deployment dataset:
+
+
+```{r}
+durability <- deploy |> 
+    mutate(record_len = 
+    replace(record_len, deployment_num == "AM0057", 0), # AM did not record at all (coded as 0)
+    percentage = record_len/battery_life)
+```
+
+#### Basic statistics
+
+```{r}
+durability |> 
+    group_by(AM_housing) |> 
+    summarise(mean_percent = mean(percentage),
+    sd_percent = sd(percentage)) |> 
+        pander()
+```
+
+What if we remove the failed AM?
+
+```{r}
+durability |>
+    filter(deployment_num != "AM0057") |> 
+    group_by(AM_housing) |> 
+    summarise(mean_percent = mean(percentage),
+    sd_percent = sd(percentage)) |>
+        pander()
+```
+
+The cases lasted for a smaller percentage of the expected recording duration on average!
+
+However, there is less variation in recording duration in the case group (especially after removing the failed AM).
+
+Let's see a visual of these results:
+
+Side-by-side boxplots:
+
+```{r}
+ggplot(durability, aes(AM_housing, percentage))+
+    geom_violin()+
+    theme_minimal()
+```
+
+Very intersting! 
 
 
 
