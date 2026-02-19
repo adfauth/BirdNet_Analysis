@@ -213,11 +213,16 @@ Side-by-side boxplots:
 
 ```{r}
 ggplot(durability, aes(AM_housing, percentage))+
-    geom_violin()+
+    geom_boxplot()+
+    geom_point()+
     theme_minimal()
 ```
 
 Very intersting! 
+
+Look at prior deployments.
+
+Regression with total number of days of deployments
 
 
 
