@@ -18,6 +18,7 @@ library(pander)
 merged <- read_csv(here("data/merged_deployment_birdnet.csv"))
 birdnet <- read_csv(here("data/birdnet_results.csv"))
 deploy <- read_csv("data/Updated_baggie_case_deployments.csv")
+history <- read_csv("data/acoustic_device_deployments.csv")
 ```
 
 Let's take a look at the structure:
@@ -220,7 +221,31 @@ ggplot(durability, aes(AM_housing, percentage))+
 
 Very intersting! 
 
-Look at prior deployments.
+#### Historical Deployments
+
+Perhaps we are looking at the wrong variable. Clearly housing does not seem to affect durability much, but previous deployments might be a much stronger predictor of durability. 
+
+Using the complete deployment history of each audiomoth we can see if the total deployment days influences the 'recording length' of the first and second round of deployments in this experiment.
+
+
+We need to filter out all the deployments after the baggie/case experiment:
+```{r}
+last_deploy <- deploy |> 
+    filter(dropoff_date == max(dropoff_date)) |> 
+    slice(1)
+
+history_cleaned <- history |> mutate(dropoff_date = lubridate::dmy(dropoff_date),
+pickup_date = lubridate::dmy(pickup_date)) |> 
+    filter(dropoff_date <= last_deploy$dropoff_date) |> 
+    filter(am_recorder_lab_id_num %in% deploy$recorder_lab_id_num) 
+    # only look at AMs that we deployed for the experiment
+
+
+# look at the all the AM id numbers and the number of deployments and total 
+history_cleaned |> group_by(am_recorder_lab_id_num) |> 
+    summarise(tot_days = sum(pickup_date - dropoff_date),
+    n_deploy = n())
+```
 
 Regression with total number of days of deployments
 
