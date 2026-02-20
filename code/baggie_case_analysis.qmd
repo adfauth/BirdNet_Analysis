@@ -234,12 +234,14 @@ last_deploy <- deploy |>
     filter(dropoff_date == max(dropoff_date)) |> 
     slice(1)
 
-history_cleaned <- history |> mutate(dropoff_date = lubridate::dmy(dropoff_date),
-pickup_date = lubridate::dmy(pickup_date)) |> 
+history_cleaned <- history |> 
+    select(deployment_num, am_recorder_lab_id_num, dropoff_date, pickup_date, AM_housing) |> 
+    mutate(dropoff_date = lubridate::dmy(dropoff_date),
+    pickup_date = lubridate::dmy(pickup_date)) |> 
     filter(dropoff_date <= last_deploy$dropoff_date) |> 
-    filter(am_recorder_lab_id_num %in% deploy$recorder_lab_id_num) 
+    filter(am_recorder_lab_id_num %in% deploy$recorder_lab_id_num)
+    
     # only look at AMs that we deployed for the experiment
-
 
 # look at the all the AM id numbers and the number of deployments and total 
 history_cleaned |> group_by(am_recorder_lab_id_num) |> 
@@ -247,7 +249,35 @@ history_cleaned |> group_by(am_recorder_lab_id_num) |>
     n_deploy = n())
 ```
 
-Regression with total number of days of deployments
+Regression with total number of days of deployments and recording length on the last deployment:
 
+```{r}
+record_len <- durability |> arrange(desc(dropoff_date)) |> 
+    group_by(recorder_lab_id_num) |> 
+    summarise(first_rec_len = last(record_len),
+    last_rec_len = first(record_len))
+
+history_plot <- history_cleaned |> group_by(am_recorder_lab_id_num) |> 
+    summarise(tot_days = sum(pickup_date - dropoff_date),
+    n_deploy = n()) |> 
+    ungroup() |> 
+    full_join(record_len, join_by(am_recorder_lab_id_num == recorder_lab_id_num))
+
+# model
+hist_mod <- lm(as.numeric(last_rec_len)~as.numeric(tot_days), data = history_plot)
+summary(hist_mod)
+
+# plot total number of days deployed
+ggplot(history_plot, aes(tot_days, last_rec_len))+
+    geom_point()+
+    geom_smooth(se = F)+
+    theme_minimal()
+
+# plot number of deployments
+ggplot(history_plot, aes(n_deploy, last_rec_len))+
+    geom_point()+
+    geom_smooth(se = F)+
+    theme_minimal()
+```
 
 
