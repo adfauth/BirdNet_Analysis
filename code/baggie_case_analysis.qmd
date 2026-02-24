@@ -310,4 +310,4 @@ ggplot(after_exp, aes(n_deploy, first_rec_len))+
     theme_minimal()
 ```
 
-
+Looking at audiomoths with two deployments in the experiment and seeing if housing type had an influence on the longeveity of its second deployment.
