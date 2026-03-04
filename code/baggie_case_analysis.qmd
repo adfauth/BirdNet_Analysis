@@ -228,13 +228,30 @@ Perhaps we are looking at the wrong variable. Clearly housing does not seem to a
 Using the complete deployment history of each audiomoth we can see if the total deployment days influences the 'recording length' of the first and second round of deployments in this experiment.
 
 
+Getting rid of AM0057 for this analysis:
+
+```{r}
+deploy_cleaned <- deploy |> filter(deployment_num != "AM0057")
+```
+
 We need to filter out all the deployments after the baggie/case experiment:
 ```{r}
-last_deploy <- deploy |> 
-    filter(dropoff_date == max(dropoff_date)) |> 
+# this code is grabbing all the 'first round' deployments 
+# and finding the earliest pick up date
+# this way we can combine it with all the historical deployments and look
+last_deploy <- deploy_cleaned |> 
+    group_by(recorder_lab_id_num) |> 
+    arrange(pickup_date) |> 
+    filter(n() >= 2) |> 
+    slice(1) |> 
+    ungroup() |> 
+    filter(pickup_date == max(pickup_date)) |> 
     slice(1)
 
-first_deploy <- deploy |> 
+# for this time frame we are looking for first deployment of the baggie/case experiment
+# this way we can look at the effect of the historical deployments on the functional
+# length of the first baggie/case deployment
+first_deploy <- deploy_cleaned |> 
     filter(dropoff_date == min(dropoff_date)) |> 
     slice(1)
 
@@ -242,8 +259,8 @@ history_cleaned <- history |>
     select(deployment_num, am_recorder_lab_id_num, dropoff_date, pickup_date, AM_housing) |> 
     mutate(dropoff_date = lubridate::dmy(dropoff_date),
     pickup_date = lubridate::dmy(pickup_date)) |> 
-    filter(dropoff_date <= last_deploy$dropoff_date) |> 
-    filter(am_recorder_lab_id_num %in% deploy$recorder_lab_id_num)
+    filter(pickup_date <= last_deploy$pickup_date) |> 
+    filter(am_recorder_lab_id_num %in% deploy_cleaned$recorder_lab_id_num)
     # only look at AMs that we deployed for the experiment
 
 # look at the all the AM id numbers and the number of deployments and total 
