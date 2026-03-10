@@ -15,6 +15,8 @@ rm(list = ls())
 library(tidyverse)
 library(here)
 library(pander)
+library(sf)
+library(spmodel)
 merged <- read_csv(here("data/merged_deployment_birdnet.csv"))
 birdnet <- read_csv(here("data/birdnet_results.csv"))
 deploy <- read_csv("data/Updated_baggie_case_deployments.csv")
@@ -239,7 +241,7 @@ We need to filter out all the deployments after the baggie/case experiment:
 # this code is grabbing all the 'first round' deployments 
 # and finding the earliest pick up date
 # this way we can combine it with all the historical deployments and look
-last_deploy <- deploy_cleaned |> 
+round_1_end <- deploy_cleaned |> 
     group_by(recorder_lab_id_num) |> 
     arrange(pickup_date) |> 
     filter(n() >= 2) |> 
@@ -255,18 +257,25 @@ first_deploy <- deploy_cleaned |>
     filter(dropoff_date == min(dropoff_date)) |> 
     slice(1)
 
-history_cleaned <- history |> 
+# we also need the list of AMs that had two deployments during the experiment
+two_deploy <- deploy_cleaned |> 
+    group_by(recorder_lab_id_num) |> 
+    filter(n() >= 2)
+
+history_2_deploy <- history |> 
     select(deployment_num, am_recorder_lab_id_num, dropoff_date, pickup_date, AM_housing) |> 
     mutate(dropoff_date = lubridate::dmy(dropoff_date),
     pickup_date = lubridate::dmy(pickup_date)) |> 
-    filter(pickup_date <= last_deploy$pickup_date) |> 
+    filter(pickup_date <= round_1_end$pickup_date) |> 
+    filter(am_recorder_lab_id_num %in% two_deploy$recorder_lab_id_num)
+
+history_before <- history |> 
+    select(deployment_num, am_recorder_lab_id_num, dropoff_date, pickup_date, AM_housing) |> 
+    mutate(dropoff_date = lubridate::dmy(dropoff_date),
+    pickup_date = lubridate::dmy(pickup_date)) |> 
+    filter(pickup_date < first_deploy$pickup_date) |> 
     filter(am_recorder_lab_id_num %in% deploy_cleaned$recorder_lab_id_num)
     # only look at AMs that we deployed for the experiment
-
-# look at the all the AM id numbers and the number of deployments and total 
-history_cleaned |> group_by(am_recorder_lab_id_num) |> 
-    summarise(tot_days = sum(pickup_date - dropoff_date),
-    n_deploy = n())
 ```
 
 Regression with total number of days of deployments and recording length on the last deployment:
@@ -277,23 +286,22 @@ record_len <- durability |> arrange(dropoff_date) |>
     summarise(first_rec_len = first(record_len),
     last_rec_len = last(record_len))
 
-after_exp <- history_cleaned |> group_by(am_recorder_lab_id_num) |> 
+after_first_deploy <- history_2_deploy |> group_by(am_recorder_lab_id_num) |> 
     summarise(tot_days = sum(pickup_date - dropoff_date),
     n_deploy = n()) |> 
     ungroup() |> 
-    full_join(record_len, join_by(am_recorder_lab_id_num == recorder_lab_id_num))
+    left_join(record_len, join_by(am_recorder_lab_id_num == recorder_lab_id_num))
 
-before_exp <- history_cleaned |> 
+before_exp <- history_before |> 
     filter(dropoff_date < first_deploy$dropoff_date) |>
     group_by(am_recorder_lab_id_num) |> 
     summarise(tot_days = sum(pickup_date - dropoff_date),
     n_deploy = n()) |> 
     ungroup() |> 
-    mutate(across(c(tot_days, n_deploy), ~replace_na(., 0)))|>
-    full_join(record_len, join_by(am_recorder_lab_id_num == recorder_lab_id_num))
+    left_join(record_len, join_by(am_recorder_lab_id_num == recorder_lab_id_num))
 
 # second deployment model
-second_deploy_mod <- lm(as.numeric(last_rec_len)~as.numeric(tot_days), data = after_exp)
+second_deploy_mod <- lm(as.numeric(last_rec_len)~as.numeric(tot_days), data = after_first_deploy)
 summary(second_deploy_mod)
 
 # first deployment model
@@ -302,29 +310,113 @@ summary(first_deploy_mod)
 
 # second deployment data:
 # plot total number of days deployed
-ggplot(after_exp, aes(tot_days, last_rec_len))+
+ggplot(after_first_deploy, aes(tot_days, last_rec_len))+
     geom_point()+
     geom_smooth(se = F)+
     theme_minimal()
 
 # plot number of deployments
-ggplot(after_exp, aes(n_deploy, last_rec_len))+
+ggplot(after_first_deploy, aes(n_deploy, last_rec_len))+
     geom_point()+
     geom_smooth(se = F)+
     theme_minimal()
 
 # first deployment data:
 # plot total number of days deployed
-ggplot(after_exp, aes(tot_days, first_rec_len))+
+ggplot(before_exp, aes(tot_days, first_rec_len))+
     geom_point()+
     geom_smooth(se = F)+
     theme_minimal()
 
 # plot number of deployments
-ggplot(after_exp, aes(n_deploy, first_rec_len))+
+ggplot(before_exp, aes(n_deploy, first_rec_len))+
     geom_point()+
     geom_smooth(se = F)+
     theme_minimal()
 ```
 
-Looking at audiomoths with two deployments in the experiment and seeing if housing type had an influence on the longeveity of its second deployment.
+It doesn't seem like there's much of an effect from historical deployments. In general, both baggie/case and historical deployments don't seem to have much of an effect on the performance/durability of the AMs in the field.
+
+
+## All Sites
+
+Now for the big finale... we will look at the the entire data set, both paired and upaired, to see if either housing group is significantly better at detecting more species (species richness) or just number of detections.
+
+We have two candidate models: 
+
+1. Multilevel Model: $SR = \beta_0 + \beta_1case\_type + \epsilon$
+ - where the random effect is for paired sites
+ - assumption is that all unpaired sites are independent
+
+2. $SR = \beta_0 + \beta_1case\_type + \epsilon + \tau$
+ - where the random effect is for paired sites
+ - $\tau$ is a spatial dependent term with some covariance structure: 
+  * $Cov(\tau_i, \tau_j) = \sigma^2 exp(-d_{ij} / \phi)$
+ - no point is considered spatially independent
+
+We will use `spmodel` for both models so that we can compare them with the same AIC/BIC.
+
+#### Multilevel Model for SR
+
+First we need to manipulate the the deployment data to have a unique ID for each paried site and re-join with the birdnet output.
+
+```{r}
+deploy_mod_df <- deploy_cleaned |> mutate(pair_id = if_else(paired == 'y',
+paste(pmin(deployment_num, paired_with), 
+pmax(deployment_num, paired_with), 
+sep = "_"), deployment_num)) # if AM is not paired, it just gets its deploy number
+
+SR_count_df <- merged |> group_by(deployment_num) |> 
+    summarise(count = n(),
+    sr = n_distinct(species))
+
+full_mod_df <- left_join(deploy_mod_df, SR_count_df, join_by(deployment_num == deployment_num))
+```
+
+Convert this data frame into an sf object using the NAD83 projection (EPSG: 4269):
+
+```{r}
+full_mod_sf <- st_as_sf(full_mod_df, coords = c("longitude", "latitude"), crs = 4269)
+```
+
+Now we can use splm() to create the model:
+
+```{r}
+mixed_mod <- splm(sr ~ AM_housing, data = full_mod_sf, 
+random = ~ 1 | pair_id, spcov_type = "none")
+summary(mixed_mod)
+```
+
+Ziplock did better!
+
+#### Spatial Model for SR
+
+Now we can try the spatial model:
+
+```{r}
+spatial_mod <- splm(sr ~ AM_housing, data = full_mod_sf, 
+spcov_type = "exponential", # added spatial covariance term
+random = ~ 1 | pair_id)
+summary(spatial_mod)
+```
+
+ Comparison:
+
+```{r}
+glances(mixed_mod, spatial_mod)
+```
+
+Looks like the the standard mixed model did better, and had close to a significant p-value. 
+
+#### Plots
+
+First lets look at a side-by-side boxplot for all the sites
+
+```{r}
+ggplot(full_mod_df, aes(AM_housing, sr))+
+    geom_boxplot()+
+    theme_minimal()
+```
+
+
+
