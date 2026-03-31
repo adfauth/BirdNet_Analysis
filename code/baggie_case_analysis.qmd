@@ -163,13 +163,13 @@ paired_plot <- deploy |> filter(paired == "y") |>
     mutate(across(c(id_count_adj, species_count_adj), ~replace_na(., 0)))
 
 # species richness
-ggplot(paired_plot, aes(AM_housing, species_count, group = paired_site))+
+ggplot(paired_plot, aes(AM_housing, species_count_adj, group = paired_site))+
     geom_point(aes(color = AM_housing))+
     geom_line()+
     theme_minimal()
 
 # total ids
-ggplot(paired_plot, aes(AM_housing, id_count, group = paired_site))+
+ggplot(paired_plot, aes(AM_housing, id_count_adj, group = paired_site))+
     geom_point(aes(color = AM_housing))+
     geom_line()+
     theme_minimal()
