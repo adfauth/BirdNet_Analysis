@@ -122,18 +122,20 @@ Let's create the data frame needed for the paired analysis:
 # create a dataset that has the species richness and total IDs for each AM
 rich_and_ids <- merged |> filter(paired == "y") |> 
     group_by(deployment_num) |> 
-    summarise(id_count = sum(!is.na(probability)),
+    summarise( id_count = sum(!is.na(probability)),
     species_count = n_distinct(species, na.rm = T))
 
 # merge the deployment 
 paired <- deploy |> filter(paired == "y") |> 
-    select(deployment_num, AM_housing, paired_site) |> 
+    select(deployment_num, AM_housing, paired_site, record_len) |> 
     left_join(rich_and_ids, join_by("deployment_num" == "deployment_num")) |> 
-    mutate(across(c(id_count, species_count), ~replace_na(., 0)))|> 
+    mutate(id_count_adj = id_count/as.numeric(record_len),
+    species_count_adj = species_count/as.numeric(record_len)) |> # divides totals by the duration of recording
+    mutate(across(c(id_count_adj, species_count_adj), ~replace_na(., 0)))|> 
     pivot_wider(id_cols = paired_site, names_from = AM_housing,
-    values_from = c(id_count, species_count)) |> 
-        mutate(diff_detect = id_count_Case - id_count_Ziplock,
-        diff_SR = species_count_Case - species_count_Ziplock)
+    values_from = c(id_count_adj, species_count_adj)) |> 
+        mutate(diff_detect = id_count_adj_Case - id_count_adj_Ziplock,
+        diff_SR = species_count_adj_Case - species_count_adj_Ziplock)
 ```
 
 #### Statistical test
@@ -141,9 +143,9 @@ paired <- deploy |> filter(paired == "y") |>
 Since we have a low number of replicates, we will use a Wilcoxon Signed Rank Test
 
 ```{r}
-wilcox.test(paired$id_count_Case, paired$id_count_Ziplock)
+wilcox.test(paired$id_count_adj_Case, paired$id_count_adj_Ziplock)
 
-wilcox.test(paired$species_count_Case, paired$species_count_Ziplock)
+wilcox.test(paired$species_count_adj_Case, paired$species_count_adj_Ziplock)
 ```
 
 Not significant, but there still might be a trend
@@ -154,9 +156,11 @@ species richness
 ```{r}
 # data for plot
 paired_plot <- deploy |> filter(paired == "y") |> 
-    select(deployment_num, AM_housing, paired_site) |> 
+    select(deployment_num, AM_housing, paired_site, record_len) |> 
     left_join(rich_and_ids, join_by("deployment_num" == "deployment_num")) |> 
-    mutate(across(c(id_count, species_count), ~replace_na(., 0)))
+    mutate(id_count_adj = id_count/as.numeric(record_len),
+    species_count_adj = species_count/as.numeric(record_len)) |> 
+    mutate(across(c(id_count_adj, species_count_adj), ~replace_na(., 0)))
 
 # species richness
 ggplot(paired_plot, aes(AM_housing, species_count, group = paired_site))+
@@ -370,7 +374,9 @@ SR_count_df <- merged |> group_by(deployment_num) |>
     summarise(count = n(),
     sr = n_distinct(species))
 
-full_mod_df <- left_join(deploy_mod_df, SR_count_df, join_by(deployment_num == deployment_num))
+full_mod_df <- left_join(deploy_mod_df, SR_count_df, join_by(deployment_num == deployment_num)) |> 
+    mutate(count_adj = count/as.numeric(record_len),
+    sr_adj = sr/as.numeric(record_len))
 ```
 
 Convert this data frame into an sf object using the NAD83 projection (EPSG: 4269):
@@ -382,23 +388,25 @@ full_mod_sf <- st_as_sf(full_mod_df, coords = c("longitude", "latitude"), crs = 
 Now we can use splm() to create the model:
 
 ```{r}
-mixed_mod <- splm(sr ~ AM_housing, data = full_mod_sf, 
+mixed_mod <- splm(sr_adj ~ AM_housing, data = full_mod_sf, 
 random = ~ 1 | pair_id, spcov_type = "none")
 summary(mixed_mod)
 ```
 
-Ziplock did better!
+No significant p-value now that we account for recording length
 
 #### Spatial Model for SR
 
 Now we can try the spatial model:
 
 ```{r}
-spatial_mod <- splm(sr ~ AM_housing, data = full_mod_sf, 
+spatial_mod <- splm(sr_adj ~ AM_housing, data = full_mod_sf, 
 spcov_type = "exponential", # added spatial covariance term
 random = ~ 1 | pair_id)
 summary(spatial_mod)
 ```
+
+Same deal.
 
  Comparison:
 
@@ -406,7 +414,7 @@ summary(spatial_mod)
 glances(mixed_mod, spatial_mod)
 ```
 
-Looks like the the standard mixed model did better, and had close to a significant p-value. 
+Looks like the the standard mixed model did better and standardizing for recording length seems to have increased the near-significant p-value for the mixed model. 
 
 #### Plots
 
