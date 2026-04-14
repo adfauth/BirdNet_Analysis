@@ -48,7 +48,7 @@ last_record = mdy(last_record),
 record_len = last_record - dropoff_date,
 battery_life = rep(2500/60, nrow(merged)), # 2500 mAh with a daily usage of 60 mAh based on config
 gb_per_d = rep(1.162, nrow(merged))) |> # GB used per day based on config
-filter(deployment_num != "AM0100") # the known AM with user error
+filter(deployment_num != "AM0100" & deployment_num != "AM0057") # the known AM with user error
 
 # add these same variables to the deployment data (also change pick up data type):
 deploy <- deploy |> mutate(dropoff_date = dmy(dropoff_date),
@@ -57,7 +57,7 @@ record_len = last_record - dropoff_date,
 battery_life = rep(2500/60, nrow(deploy)),
 gb_per_d = rep(1.162, nrow(deploy)),
 pickup_date = dmy(pickup_date))|> 
-filter(deployment_num != "AM0100") 
+filter(deployment_num != "AM0100" & deployment_num != "AM0057") 
 
 glimpse(merged)
 glimpse(deploy)
@@ -184,9 +184,7 @@ Let's add this variable to the deployment dataset:
 
 ```{r}
 durability <- deploy |> 
-    mutate(record_len = 
-    replace(record_len, deployment_num == "AM0057", 0), # AM did not record at all (coded as 0)
-    percentage = record_len/battery_life)
+    mutate(percentage = record_len/battery_life)
 ```
 
 #### Basic statistics
@@ -199,16 +197,6 @@ durability |>
         pander()
 ```
 
-What if we remove the failed AM?
-
-```{r}
-durability |>
-    filter(deployment_num != "AM0057") |> 
-    group_by(AM_housing) |> 
-    summarise(mean_percent = mean(percentage),
-    sd_percent = sd(percentage)) |>
-        pander()
-```
 
 The cases lasted for a smaller percentage of the expected recording duration on average!
 
@@ -227,25 +215,24 @@ ggplot(durability, aes(AM_housing, percentage))+
 
 Very intersting! 
 
+#### 2-sample t-test
+
+```{r}
+t.test(record_len ~ AM_housing, data = deploy)
+```
+
 #### Historical Deployments
 
 Perhaps we are looking at the wrong variable. Clearly housing does not seem to affect durability much, but previous deployments might be a much stronger predictor of durability. 
 
 Using the complete deployment history of each audiomoth we can see if the total deployment days influences the 'recording length' of the first and second round of deployments in this experiment.
 
-
-Getting rid of AM0057 for this analysis:
-
-```{r}
-deploy_cleaned <- deploy |> filter(deployment_num != "AM0057")
-```
-
 We need to filter out all the deployments after the baggie/case experiment:
 ```{r}
 # this code is grabbing all the 'first round' deployments 
 # and finding the earliest pick up date
 # this way we can combine it with all the historical deployments and look
-round_1_end <- deploy_cleaned |> 
+round_1_end <- deploy |> 
     group_by(recorder_lab_id_num) |> 
     arrange(pickup_date) |> 
     filter(n() >= 2) |> 
@@ -257,12 +244,12 @@ round_1_end <- deploy_cleaned |>
 # for this time frame we are looking for first deployment of the baggie/case experiment
 # this way we can look at the effect of the historical deployments on the functional
 # length of the first baggie/case deployment
-first_deploy <- deploy_cleaned |> 
+first_deploy <- deploy |> 
     filter(dropoff_date == min(dropoff_date)) |> 
     slice(1)
 
 # we also need the list of AMs that had two deployments during the experiment
-two_deploy <- deploy_cleaned |> 
+two_deploy <- deploy |> 
     group_by(recorder_lab_id_num) |> 
     filter(n() >= 2)
 
@@ -278,7 +265,7 @@ history_before <- history |>
     mutate(dropoff_date = lubridate::dmy(dropoff_date),
     pickup_date = lubridate::dmy(pickup_date)) |> 
     filter(pickup_date < first_deploy$pickup_date) |> 
-    filter(am_recorder_lab_id_num %in% deploy_cleaned$recorder_lab_id_num)
+    filter(am_recorder_lab_id_num %in% deploy$recorder_lab_id_num)
     # only look at AMs that we deployed for the experiment
 ```
 
@@ -365,7 +352,7 @@ We will use `spmodel` for both models so that we can compare them with the same 
 First we need to manipulate the the deployment data to have a unique ID for each paried site and re-join with the birdnet output.
 
 ```{r}
-deploy_mod_df <- deploy_cleaned |> mutate(pair_id = if_else(paired == 'y',
+deploy_mod_df <- deploy |> mutate(pair_id = if_else(paired == 'y',
 paste(pmin(deployment_num, paired_with), 
 pmax(deployment_num, paired_with), 
 sep = "_"), deployment_num)) # if AM is not paired, it just gets its deploy number
