@@ -285,7 +285,7 @@ after_first_deploy <- history_2_deploy |> group_by(am_recorder_lab_id_num) |>
 
 before_exp <- history_before |> 
     filter(dropoff_date < first_deploy$dropoff_date) |>
-    group_by(am_recorder_lab_id_num) |> 
+    group_by(am_recorder_lab_id_num, AM_housing) |> 
     summarise(tot_days = sum(pickup_date - dropoff_date),
     n_deploy = n()) |> 
     ungroup() |> 
@@ -314,7 +314,7 @@ ggplot(after_first_deploy, aes(n_deploy, last_rec_len))+
 
 # first deployment data:
 # plot total number of days deployed
-ggplot(before_exp, aes(tot_days, first_rec_len))+
+ggplot(before_exp, aes(tot_days, first_rec_len, color = AM_housing))+
     geom_point()+
     geom_smooth(se = F)+
     theme_minimal()
@@ -327,6 +327,25 @@ ggplot(before_exp, aes(n_deploy, first_rec_len))+
 ```
 
 It doesn't seem like there's much of an effect from historical deployments. In general, both baggie/case and historical deployments don't seem to have much of an effect on the performance/durability of the AMs in the field.
+
+
+We need to scrap everything because some of the deployments are shorter than the battery life. Here I will do a logistic regression that takes into account the deployment length (how long it was in the field for) as well as the expected battery life and consider all devices that failed before the pick-up or the batteries died as a 0 and all others as a 1 (success).
+
+```{r}
+durability <- deploy |> mutate(deploy_len = pickup_date - dropoff_date,
+success = case_when(record_len >= deploy_len ~ 1, # not sure why but one recorder has an extra folder of recordings
+deploy_len >= 41 ~ 1,
+deploy_len < 41 ~ 0))
+
+durability_mod <- glm(success ~ AM_housing, family = "binomial", data = durability)
+summary(durability_mod)
+
+
+ggplot(durability, aes(AM_housing, record_len/as.numeric(deploy_len)))+
+    geom_boxplot()+
+    geom_jitter(width = 0.05, height = 0)+
+    theme_minimal() # doesn't account for battery life
+```
 
 
 ## All Sites

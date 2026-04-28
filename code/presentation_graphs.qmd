@@ -1,0 +1,197 @@
+---
+title: "Poster Graphs"
+format: html
+---
+
+This document takes code found in the analysis document that is relevant for my oral presentation (and changes the theme).
+
+## Set up
+
+```{r}
+rm(list = ls())
+library(tidyverse)
+library(here)
+source("theme_teach1.R") # theme for graphs
+merged <- read_csv(here("data/merged_deployment_birdnet.csv"))
+birdnet <- read_csv(here("data/birdnet_results.csv"))
+deploy <- read_csv("data/Updated_baggie_case_deployments.csv")
+history <- read_csv("data/acoustic_device_deployments.csv")
+```
+
+#### Changes to data frames
+
+```{r}
+# save recording length and battery life as new variables
+merged <- merged |> mutate(dropoff_date = dmy(dropoff_date),
+last_record = mdy(last_record),
+record_len = last_record - dropoff_date,
+battery_life = rep(2500/60, nrow(merged)), # 2500 mAh with a daily usage of 60 mAh based on config
+gb_per_d = rep(1.162, nrow(merged))) |> # GB used per day based on config
+filter(deployment_num != "AM0100" & deployment_num != "AM0057") # the known AM with user error
+
+# add these same variables to the deployment data (also change pick up data type):
+deploy <- deploy |> mutate(dropoff_date = dmy(dropoff_date),
+last_record = mdy(last_record),
+record_len = last_record - dropoff_date,
+battery_life = rep(2500/60, nrow(deploy)),
+gb_per_d = rep(1.162, nrow(deploy)),
+pickup_date = dmy(pickup_date))|> 
+filter(deployment_num != "AM0100" & deployment_num != "AM0057") 
+```
+
+## Durability
+
+```{r}
+ggplot(deploy, aes(AM_housing, record_len))+
+    geom_boxplot()+
+    geom_jitter(width = 0.03, height = 0)+
+    geom_hline(yintercept = 41.67, linetype = "dashed", color = "red")+
+    labs(x = "Housing Type",
+    y = "Recording length (days)")+
+    theme_minimal()+
+    theme_teach()
+```
+
+## Paired
+
+```{r}
+# create a dataset that has the species richness and total IDs for each AM
+rich_and_ids <- merged |> filter(paired == "y") |> 
+    group_by(deployment_num) |> 
+    summarise( id_count = sum(!is.na(probability)),
+    species_count = n_distinct(species, na.rm = T))
+
+# merge the deployment 
+paired <- deploy |> filter(paired == "y") |> 
+    select(deployment_num, AM_housing, paired_site, record_len) |> 
+    left_join(rich_and_ids, join_by("deployment_num" == "deployment_num")) |> 
+    mutate(id_count_adj = id_count/as.numeric(record_len),
+    species_count_adj = species_count/as.numeric(record_len)) |> # divides totals by the duration of recording
+    mutate(across(c(id_count_adj, species_count_adj), ~replace_na(., 0)))|> 
+    pivot_wider(id_cols = paired_site, names_from = AM_housing,
+    values_from = c(id_count_adj, species_count_adj)) |> 
+        mutate(diff_detect = id_count_adj_Case - id_count_adj_Ziplock,
+        diff_SR = species_count_adj_Case - species_count_adj_Ziplock)
+```
+
+```{r}
+# data for plot
+paired_plot <- deploy |> filter(paired == "y") |> 
+    select(deployment_num, AM_housing, paired_site, record_len) |> 
+    left_join(rich_and_ids, join_by("deployment_num" == "deployment_num")) |> 
+    mutate(id_count_adj = id_count/as.numeric(record_len),
+    species_count_adj = species_count/as.numeric(record_len)) |> 
+    mutate(across(c(id_count_adj, species_count_adj), ~replace_na(., 0)))
+
+# data of mean and sd
+paired_summary <- paired_plot |> group_by(AM_housing) |> 
+    summarise(mean_sp = mean(species_count_adj),
+    sd_sp = sd(species_count_adj),
+    mean_ids = mean(id_count_adj),
+    sd_ids = sd(id_count_adj))
+
+# species richness
+ggplot(paired_plot, aes(AM_housing, species_count_adj, group = paired_site))+
+    geom_point(aes(color = AM_housing))+
+    geom_line()+
+    labs(x = "Housing Type",
+    y = "Species Detected per Day",
+    color = "Housing Type")+
+    theme_minimal()+
+    theme(legend.position = "none")+
+    theme_teach()
+
+# SR mean ± sd
+ggplot(paired_summary, aes(AM_housing, mean_sp))+
+    geom_point(aes(color = AM_housing))+
+    geom_errorbar(aes(ymin = mean_sp - sd_sp, ymax = mean_sp + sd_sp), 
+        width= 0.1)+
+    labs(x = "Housing Type",
+        y = "Species Detected per Day")+
+    theme_minimal()+
+    theme(legend.position = "none")+
+    theme_teach()
+
+# total ids
+ggplot(paired_plot, aes(AM_housing, id_count_adj, group = paired_site))+
+    geom_point(aes(color = AM_housing))+
+    geom_line()+
+    labs(x = "Housing Type",
+        y = "# of Detections per Day",
+        color = "Housing Type")+
+    theme_minimal()+
+    theme(legend.position = "none")+
+    theme_teach()
+
+# ids mean ± sd
+ggplot(paired_summary, aes(AM_housing, mean_ids))+
+    geom_point(aes(color = AM_housing))+
+    geom_errorbar(aes(ymin = mean_ids - sd_ids, ymax = mean_ids + sd_ids), 
+        width= 0.1)+
+    labs(x = "Housing Type",
+        y = "# of Detections per Day")+
+    theme_minimal()+
+    theme(legend.position = "none")+
+    theme_teach()
+```
+
+## Overall Model
+
+```{r}
+SR <- merged |> group_by(deployment_num) |> 
+    summarise(count = n_distinct(species)) |> 
+    ungroup()
+
+overall_plot <- left_join(deploy, SR, join_by(deployment_num == deployment_num)) |> 
+    mutate(sr_adj = count/as.numeric(record_len),
+    paired = fct_recode(paired, "paired" = "y", "not paired" = "n"))
+
+ggplot(overall_plot, aes(AM_housing, sr_adj))+
+    geom_boxplot(color = "black")+
+    geom_jitter(width = 0.04, height = 0, aes(color = paired))+
+    scale_color_manual(values = c("paired" = "red", "not paired" = "black"))+
+    labs(x = "Housing Type",
+    y = "Species per Day",
+    color = "Site Type")+
+    theme_minimal()+
+    theme_teach()
+```
+
+## Dummy figures
+
+```{r}
+toy <- tibble(housing = c("Ziplock", "Case"),
+mean_sr = c(20,10),
+sd_sr = c(5,4),
+recording_len = c(20, 35),
+sd_rc = c(12, 8)
+)
+
+# maximizing species detection
+ggplot(toy, aes(x = housing, y = mean_sr))+
+    geom_point()+
+    geom_errorbar(aes(ymin = mean_sr - sd_sr, ymax = mean_sr + sd_sr), 
+    width = 0.1)+
+    labs(x = "Housing Type",
+    y = "Species Richness")+
+    theme_minimal()+
+    theme_teach()
+
+# durability
+ggplot(toy, aes(housing, recording_len))+
+    geom_point()+
+    geom_errorbar(aes(ymin = recording_len - sd_rc, 
+    ymax = recording_len + sd_rc), 
+    width = 0.1)+
+    labs(x = "Housing Type",
+    y = "Recording Length")+
+    theme_minimal()+
+    theme_teach()
+```
+
+## Model Latex
+
+$$
+SR/day = \beta_0 + \beta_1case\_type + \epsilon
+$$
+
