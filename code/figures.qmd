@@ -1,19 +1,15 @@
 ---
-title: "Data Analysis"
+title: "Figures and Tables"
 author: "Aidan Fauth"
+execute: 
+  warning: false
+  echo: false
 format: 
   docx:
     embed-resources: true
-# execute: 
-#   eval: false
 ---
-## Introduction
 
-This document contains the final analysis for the baggie/case paper. The starting point will be the outline of the result section that I have already written, and as analysis reveals insight/new questions, I will add/subtract from there. I will start by calculating some general statistics about the data and the sampling effort. Then, I will look at paired data subset, first by creating a data frame that will be used in all the possible analyses for those data. After, I will continue with the analysis for the whole project. 
-
-## Set up
-
-Let's load in the necessary packages and the merged data file (containing both deployment data and BirdNET output).
+This document will contain al the figures found in my SYE paper.
 
 ```{r}
 rm(list = ls())
@@ -25,52 +21,29 @@ library(spmodel)
 merged <- read_csv(here("data/merged_deployment_birdnet.csv"))
 birdnet <- read_csv(here("data/birdnet_results.csv"))
 deploy <- read_csv(here("data/Updated_baggie_case_deployments.csv"))
-history <- read_csv(here("data/acoustic_device_deployments.csv"))
 ```
 
-Let's take a look at the structure:
-
-```{r}
-glimpse(merged)
-```
-
-
-## Summary Statistics
-
-There are some variables to add to the data frame:
-
- - record_len: stores the length of actual recording (using the deployment date and last recording date)
-
- - battery_life: stores the expected battery life based on the config file (same for every AM)
-
- - *gb_full: amount of time expected to fill the sd card based on card size and config file*
-     - *Would have added sd_full variable but the battery seems like the limiting factor (regardless of the 64 GB or 256 GB cards)*
+Clean up data frames:
 
 ```{r}
 # save recording length and battery life as new variables
 merged <- merged |> mutate(dropoff_date = dmy(dropoff_date),
-pickup_date = dmy(pickup_date),
 last_record = mdy(last_record),
 record_len = last_record - dropoff_date,
 battery_life = rep(2500/60, nrow(merged)), # 2500 mAh with a daily usage of 60 mAh based on config
 gb_per_d = rep(1.162, nrow(merged))) |> # GB used per day based on config
-filter(deployment_num != "AM0100" & deployment_num != "AM0057") |> # the known AM with user error
-mutate(deploy_len = pickup_date - dropoff_date)
+filter(deployment_num != "AM0100" & deployment_num != "AM0057") # the known AM with user error
 
 # add these same variables to the deployment data (also change pick up data type):
 deploy <- deploy |> mutate(dropoff_date = dmy(dropoff_date),
-pickup_date = dmy(pickup_date),
 last_record = mdy(last_record),
 record_len = last_record - dropoff_date,
 battery_life = rep(2500/60, nrow(deploy)),
-gb_per_d = rep(1.162, nrow(deploy)))|> 
-filter(deployment_num != "AM0100" & deployment_num != "AM0057") |>
-mutate(deploy_len = pickup_date - dropoff_date)
-
-glimpse(merged)
-glimpse(deploy)
+gb_per_d = rep(1.162, nrow(deploy)),
+pickup_date = dmy(pickup_date),
+deploy_len = pickup_date - dropoff_date)|> 
+filter(deployment_num != "AM0100" & deployment_num != "AM0057") 
 ```
-
 
 No anthroprogenic noise:
 
@@ -80,6 +53,8 @@ anthro <- c("Fireworks_Fireworks", "Siren_Siren", "Engine_Engine", "Gun_Gun",
 
 cleaned <- merged |> filter(!(species %in% anthro))
 ```
+
+## Basic Summary Stats
 
 Total nights of deployment and nights of recording:
 
@@ -113,6 +88,11 @@ merged |> group_by(AM_housing) |>
     summarise(total_ids = sum(!is.na(probability)),
     total_sp = n_distinct(species, na.rm = T)) |> 
         pander() 
+
+cleaned |> group_by(AM_housing) |>
+    summarise(total_ids = sum(!is.na(probability)),
+    total_sp = n_distinct(species, na.rm = T)) |> 
+        pander() 
 ```
 
 Mean and sd:
@@ -127,9 +107,21 @@ merged |> group_by(AM_housing, deployment_num) |>
         mean_sp = mean(total_sp),
         sd_sp = sd(total_sp)) |> 
             pander()
+
+cleaned |> group_by(AM_housing, deployment_num) |> 
+    summarise(total_ids = sum(!is.na(probability)),
+    total_sp = n_distinct(species, na.rm = T)) |> 
+        group_by(AM_housing) |> 
+        summarise(mean_ids = mean(total_ids),
+        sd_ids = sd(total_ids),
+        mean_sp = mean(total_sp),
+        sd_sp = sd(total_sp)) |> 
+            pander()
 ```
 
-#### Species List Comparison
+
+
+#### Baggie & Case Species Comparison
 
 ```{r}
 Species <- unique(merged$species)
@@ -162,11 +154,37 @@ b_c_list |> arrange(Species)|>
     pander()
 ```
 
-## Paired Analysis
 
-Here the analysis will focus on the subset of deployments that included two AMs at the same site.
+## Durability
 
-Let's create the data frame needed for the paired analysis:
+```{r}
+durability <- deploy |> 
+    mutate(percentage = record_len/battery_life,
+    deploy_len = pickup_date - dropoff_date)
+
+durability_test <- durability |> 
+    select(deployment_num, AM_housing, deploy_len, record_len, percentage) |> 
+    filter(deploy_len > 21)
+
+durability |> group_by(AM_housing) |> summarise(num = sum(record_len),
+mean = mean(record_len),
+sd = sd(record_len)) |> pander()
+
+durability_test |> group_by(AM_housing) |> summarise(num = sum(record_len),
+mean = mean(record_len),
+sd = sd(record_len)) |> pander()
+
+ggplot(durability_test, aes(AM_housing, record_len))+
+    geom_boxplot()+
+    geom_jitter(width = 0.03, height = 0)+
+    geom_hline(yintercept = 41.67, linetype = "dashed", color = "red")+
+    scale_y_continuous(limits = c(0, NA))+
+    labs(x = "Housing Type",
+    y = "Recording length (days)")+
+    theme_minimal()
+```
+
+## Paired
 
 ### IDs
 
@@ -189,15 +207,6 @@ paired_ids <- deploy |> filter(paired == "y") |>
         mutate(diff_detect = Case - Ziplock)
 ```
 
-#### Statistical test
-
-Since we have a low number of replicates, we will use a Wilcoxon Signed Rank Test
-
-```{r}
-wilcox.test(paired_ids$Case, paired_ids$Ziplock, paired = TRUE)
-```
-
-Not significant, but there still might be a trend
 
 #### Plot
 
@@ -215,10 +224,10 @@ ggplot(paired_plot_ids, aes(AM_housing, id_mean, group = paired_site))+
     labs(x = "Housing Type",
         y = "Average Detections per day",
         color = "Housing Type")+
-    scale_colour_viridis_d()+
     theme_minimal()+
     theme(legend.position = "none")
 ```
+
 
 ### Species Richness
 
@@ -243,10 +252,6 @@ paired_sr <- deploy |> filter(paired == "y") |>
         mutate(diff_SR = Case - Ziplock)
 ```
 
-#### Test
-```{r}
-wilcox.test(paired_sr$Case, paired_sr$Ziplock, paired = TRUE)
-```
 
 #### Plot
 
@@ -262,177 +267,13 @@ ggplot(paired_plot_sr, aes(AM_housing, sr_mean, group = paired_site))+
     labs(x = "Housing Type",
         y = "Average SR per day",
         color = "Housing Type")+
-            scale_colour_viridis_d()+
     theme_minimal()+
     theme(legend.position = "none")
 ```
 
-## Durability Analysis
 
-Due to the estimation by the configuration app based on our config file, we know that the batteries will last around 41.67 days and we used 1.162 GB on the SD card per day. Since the SD cards were either 64 GB or 256 GB, the batteries are the clear limiting factor on how long we would predict the AM to last. Therefore, for our durability analysis, our response variable will be the percentage of days that the AM lasted based on our expected battery life.
+## Model
 
-Let's add this variable to the deployment dataset:
-
-
-```{r}
-durability <- deploy |> 
-    mutate(percentage = record_len/battery_life)
-```
-
-#### Basic statistics
-
-```{r}
-durability |> 
-    group_by(AM_housing) |> 
-    summarise(mean_percent = mean(percentage),
-    sd_percent = sd(percentage)) |> 
-        pander()
-```
-
-
-The cases lasted for a smaller percentage of the expected recording duration on average!
-
-However, there is less variation in recording duration in the case group (especially after removing the failed AM).
-
-### Test
-
-```{r}
-# need to only use round two deployments
-durability_test <- durability |> 
-    select(deployment_num, AM_housing, deploy_len, record_len, percentage) |> 
-    filter(deploy_len > 21)
-
-wilcox.test(as.numeric(record_len) ~ AM_housing, data = durability_test)
-```
-
-### Plot
-
-```{r}
-ggplot(durability_test, aes(AM_housing, record_len))+
-    geom_boxplot()+
-    geom_jitter(width = 0.03, height = 0)+
-    geom_hline(yintercept = 41.67, linetype = "dashed", color = "red")+
-    scale_y_continuous(limits = c(0, NA))+
-    labs(x = "Housing Type",
-    y = "Recording length (days)")+
-    theme_minimal()
-```
-
-## All Sites
-
-Now for the big finale... we will look at the the entire data set, both paired and upaired, to see if either housing group is significantly better at detecting more species (species richness) or just number of detections.
-
-We have two candidate models: 
-
-1. Multilevel Model: $SR = \beta_0 + \beta_1case\_type + \epsilon$
- - where the random effect is for paired sites
- - assumption is that all unpaired sites are independent
-
-2. $SR = \beta_0 + \beta_1case\_type + \epsilon + \tau$
- - where the random effect is for paired sites
- - $\tau$ is a spatial dependent term with some covariance structure: 
-  * $Cov(\tau_i, \tau_j) = \sigma^2 exp(-d_{ij} / \phi)$
- - no point is considered spatially independent
-
-We will use `spmodel` for both models so that we can compare them with the same AIC/BIC.
-
-#### Multilevel Model for SR
-
-First we need to manipulate the the deployment data to have a unique ID for each paried site and re-join with the birdnet output.
-
-```{r}
-deploy_mod_df <- deploy |> mutate(pair_id = if_else(paired == 'y',
-paste(pmin(deployment_num, paired_with), 
-pmax(deployment_num, paired_with), 
-sep = "_"), deployment_num)) |> 
-mutate(deploy_len = pickup_date - dropoff_date,
-Round = if_else(deploy_len <= 21, 
-    true = "Round 1", false = "Round 2"))
-
-sr_mod_df <- left_join(deploy_mod_df, rich_cleaned, 
-join_by(deployment_num == deployment_num))
-```
-
-Convert this data frame into an sf object using the NAD83 projection (EPSG: 5070):
-
-```{r}
-sr_mod_sf <- st_as_sf(sr_mod_df, coords = c("longitude", "latitude"), crs = 4326)
-
-sr_mod_sf <- st_transform(sr_mod_sf, crs = 5070)
-```
-
-Now we can use splm() to create the model:
-
-```{r}
-mixed_mod <- splm(sr_mean ~ AM_housing + Round, data = sr_mod_sf, 
-random = ~ 1 | pair_id, spcov_type = "none")
-summary(mixed_mod)
-```
-
-significant p-value now that we account for round and average per day!
-
-#### Spatial Model for SR
-
-Now we can try the spatial model:
-
-```{r}
-spatial_mod <- splm(sr_mean ~ AM_housing + Round, data = sr_mod_sf, 
-spcov_type = "exponential")
-summary(spatial_mod)
-```
-
-Same deal.
-
- Comparison:
-
-```{r}
-glances(mixed_mod, spatial_mod) |> pander()
-```
-
-Looks like the the standard mixed model did better and standardizing for recording length seems to have increased the near-significant p-value for the mixed model. 
-
-```{r}
-tidy(mixed_mod) |> pander()
-```
-
-#### Mixed model for IDs
-
-```{r}
-deploy_mod_df <- deploy |> mutate(pair_id = if_else(paired == 'y',
-paste(pmin(deployment_num, paired_with), 
-pmax(deployment_num, paired_with), 
-sep = "_"), deployment_num)) |> 
-mutate(deploy_len = pickup_date - dropoff_date,
-Round = if_else(deploy_len <= 21, 
-    true = "Round 1", false = "Round 2"))
-
-id_mod_df <- left_join(deploy_mod_df, ids, 
-join_by(deployment_num == deployment_num))
-```
-
-Convert this data frame into an sf object using the NAD83 projection (EPSG: 5070):
-
-```{r}
-id_mod_sf <- st_as_sf(id_mod_df, coords = c("longitude", "latitude"), crs = 4326)
-
-id_mod_sf <- st_transform(id_mod_sf, crs = 5070)
-```
-
-Now we can use splm() to create the model:
-
-```{r}
-mixed_id_mod <- splm(id_mean ~ AM_housing + Round, data = id_mod_sf, 
-random = ~ 1 | pair_id, spcov_type = "none")
-summary(mixed_id_mod)
-```
-
-```{r}
-tidy(mixed_id_mod) |> pander()
-```
-
-#### Plots
-
-First lets look at a side-by-side boxplot for all the sites
 
 ```{r}
 overall_plot <- left_join(deploy, rich_cleaned, join_by(deployment_num == deployment_num)) |> 
@@ -444,7 +285,7 @@ ggplot(overall_plot, aes(AM_housing, sr_mean))+
     geom_jitter(width = 0.04, height = 0, aes(color = paired))+
     scale_color_manual(values = c("paired" = "red", "not paired" = "black"))+
     labs(x = "Housing Type",
-    y = "Average SR per day",
+    y = "Average species per day",
     color = "Site Type")+
     theme_minimal()
 
@@ -457,10 +298,11 @@ ggplot(id_plot, aes(AM_housing, id_mean))+
     geom_jitter(width = 0.04, height = 0, aes(color = paired))+
     scale_color_manual(values = c("paired" = "red", "not paired" = "black"))+
     labs(x = "Housing Type",
-    y = "Average species detections per day",
+    y = "Average species IDs per day",
     color = "Site Type")+
     theme_minimal()
 ```
+
 
 
 ## Species Accumulation
@@ -565,7 +407,6 @@ aes(date, cum_num_species, group = deployment_num, color = AM_housing))+
   facet_wrap(~paired_site)+
   labs(x = "Date", y = "Cumulative number of species")+
   labs(color = "AM Housing")+
-  scale_colour_viridis_d()+
   theme_minimal(base_size = 14)
 ```
 
@@ -587,7 +428,109 @@ aes(index, cum_num_species, group = deployment_num, color = AM_housing))+
   facet_wrap(~Round)+
   labs(x = "Day deployed", y = "Cumulative number of species")+
   labs(color = "AM Housing")+
-  scale_colour_viridis_d()+
   theme_minimal(base_size = 12)
 ```
+
+## Models
+
+#### Multilevel Model for SR
+
+First we need to manipulate the the deployment data to have a unique ID for each paried site and re-join with the birdnet output.
+
+```{r}
+deploy_mod_df <- deploy |> mutate(pair_id = if_else(paired == 'y',
+paste(pmin(deployment_num, paired_with), 
+pmax(deployment_num, paired_with), 
+sep = "_"), deployment_num)) |> 
+mutate(deploy_len = pickup_date - dropoff_date,
+Round = if_else(deploy_len <= 21, 
+    true = "Round 1", false = "Round 2"))
+
+sr_mod_df <- left_join(deploy_mod_df, rich_cleaned, 
+join_by(deployment_num == deployment_num))
+```
+
+Convert this data frame into an sf object using the NAD83 projection (EPSG: 5070):
+
+```{r}
+#sr_mod_sf <- st_as_sf(sr_mod_df, coords = c("longitude", "latitude"), crs = 5070)
+
+sr_mod_sf <- st_as_sf(sr_mod_df, coords = c("longitude", "latitude"), crs = 4326)
+
+sr_mod_sf <- st_transform(sr_mod_sf, crs = 5070)
+```
+
+Now we can use splm() to create the model:
+
+```{r}
+mixed_mod <- splm(sr_mean ~ AM_housing + Round, data = sr_mod_sf, 
+random = ~ 1 | pair_id, spcov_type = "none")
+summary(mixed_mod)
+```
+
+significant p-value now that we account for round and average per day!
+
+```{r}
+tidy(mixed_mod) |> pander()
+```
+
+#### Spatial Model for SR
+
+Now we can try the spatial model:
+
+```{r}
+spatial_mod <- splm(sr_mean ~ AM_housing + Round, data = sr_mod_sf, 
+spcov_type = "exponential")
+summary(spatial_mod)
+```
+
+Same deal.
+
+ Comparison:
+
+$$ y = \beta_0 + \beta_1(AM Housing) + \beta_2(Round) + \epsilon_{site} 
+$$
+
+$$ Y = \beta_0 + \beta_1(AM Housing) + \beta_2(Round) + \tau 
+$$
+
+```{r}
+glances(mixed_mod, spatial_mod) |> pander()
+```
+
+Looks like the the standard mixed model did better and standardizing for recording length seems to have increased the near-significant p-value for the mixed model. 
+
+#### Mixed model for IDs
+
+```{r}
+deploy_mod_df <- deploy |> mutate(pair_id = if_else(paired == 'y',
+paste(pmin(deployment_num, paired_with), 
+pmax(deployment_num, paired_with), 
+sep = "_"), deployment_num)) |> 
+mutate(deploy_len = pickup_date - dropoff_date,
+Round = if_else(deploy_len <= 21, 
+    true = "Round 1", false = "Round 2"))
+
+id_mod_df <- left_join(deploy_mod_df, ids, 
+join_by(deployment_num == deployment_num))
+```
+
+Convert this data frame into an sf object using the NAD83 projection (EPSG: 5070):
+
+```{r}
+id_mod_sf <- st_as_sf(id_mod_df, coords = c("longitude", "latitude"), crs = 5070)
+```
+
+Now we can use splm() to create the model:
+
+```{r}
+mixed_id_mod <- splm(id_mean ~ AM_housing + Round, data = id_mod_sf, 
+random = ~ 1 | pair_id, spcov_type = "none")
+summary(mixed_mod)
+```
+
+```{r}
+tidy(mixed_id_mod) |> pander()
+```
+
 

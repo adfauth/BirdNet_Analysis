@@ -1,0 +1,123 @@
+---
+title: "Historical Analysis"
+format: html
+---
+
+## Set up
+
+```{r}
+rm(list = ls())
+deploy <- read_csv(here("data/Updated_baggie_case_deployments.csv"))
+```
+
+## Historical Deployments
+
+Perhaps we are looking at the wrong variable. Clearly housing does not seem to affect durability much, but previous deployments might be a much stronger predictor of durability. 
+
+Using the complete deployment history of each audiomoth we can see if the total deployment days influences the 'recording length' of the first and second round of deployments in this experiment.
+
+We need to filter out all the deployments after the baggie/case experiment:
+```{r}
+# this code is grabbing all the 'first round' deployments 
+# and finding the earliest pick up date
+# this way we can combine it with all the historical deployments and look
+round_1_end <- deploy |> 
+    group_by(recorder_lab_id_num) |> 
+    arrange(pickup_date) |> 
+    filter(n() >= 2) |> 
+    slice(1) |> 
+    ungroup() |> 
+    filter(pickup_date == max(pickup_date)) |> 
+    slice(1)
+
+# for this time frame we are looking for first deployment of the baggie/case experiment
+# this way we can look at the effect of the historical deployments on the functional
+# length of the first baggie/case deployment
+first_deploy <- deploy |> 
+    filter(dropoff_date == min(dropoff_date)) |> 
+    slice(1)
+
+# we also need the list of AMs that had two deployments during the experiment
+two_deploy <- deploy |> 
+    group_by(recorder_lab_id_num) |> 
+    filter(n() >= 2)
+
+history_2_deploy <- history |> 
+    select(deployment_num, am_recorder_lab_id_num, dropoff_date, pickup_date, AM_housing) |> 
+    mutate(dropoff_date = lubridate::dmy(dropoff_date),
+    pickup_date = lubridate::dmy(pickup_date)) |> 
+    filter(pickup_date <= round_1_end$pickup_date) |> 
+    filter(am_recorder_lab_id_num %in% two_deploy$recorder_lab_id_num)
+
+history_before <- history |> 
+    select(deployment_num, am_recorder_lab_id_num, dropoff_date, pickup_date, AM_housing) |> 
+    mutate(dropoff_date = lubridate::dmy(dropoff_date),
+    pickup_date = lubridate::dmy(pickup_date)) |> 
+    filter(pickup_date < first_deploy$pickup_date) |> 
+    filter(am_recorder_lab_id_num %in% deploy$recorder_lab_id_num)
+    # only look at AMs that we deployed for the experiment
+```
+
+Regression with total number of days of deployments and recording length on the last deployment:
+
+```{r}
+record_len <- durability |> arrange(dropoff_date) |> 
+    group_by(recorder_lab_id_num) |> 
+    summarise(first_rec_len = first(record_len),
+    last_rec_len = last(record_len))
+
+after_first_deploy <- history_2_deploy |> group_by(am_recorder_lab_id_num) |> 
+    summarise(tot_days = sum(pickup_date - dropoff_date),
+    n_deploy = n()) |> 
+    ungroup() |> 
+    left_join(record_len, join_by(am_recorder_lab_id_num == recorder_lab_id_num))
+
+before_exp <- history_before |> 
+    filter(dropoff_date < first_deploy$dropoff_date) |>
+    group_by(am_recorder_lab_id_num, AM_housing) |> 
+    summarise(tot_days = sum(pickup_date - dropoff_date),
+    n_deploy = n()) |> 
+    ungroup() |> 
+    left_join(record_len, join_by(am_recorder_lab_id_num == recorder_lab_id_num))
+
+# second deployment model
+second_deploy_mod <- lm(as.numeric(last_rec_len)~as.numeric(tot_days), data = after_first_deploy)
+summary(second_deploy_mod)
+
+# first deployment model
+first_deploy_mod <- lm(as.numeric(first_rec_len)~as.numeric(tot_days), data = before_exp)
+summary(first_deploy_mod)
+
+# second deployment data:
+# plot total number of days deployed
+ggplot(after_first_deploy, aes(tot_days, last_rec_len))+
+    geom_point()+
+    geom_smooth(se = F)+
+    theme_minimal()
+
+# plot number of deployments
+ggplot(after_first_deploy, aes(n_deploy, last_rec_len))+
+    geom_point()+
+    geom_smooth(se = F)+
+    theme_minimal()
+
+# first deployment data:
+# plot total number of days deployed
+ggplot(before_exp, aes(tot_days, first_rec_len, color = AM_housing))+
+    geom_point()+
+    geom_smooth(se = F)+
+    theme_minimal()
+
+# plot number of deployments
+ggplot(before_exp, aes(n_deploy, first_rec_len))+
+    geom_point()+
+    geom_smooth(se = F)+
+    theme_minimal()
+```
+
+It doesn't seem like there's much of an effect from historical deployments. In general, both baggie/case and historical deployments don't seem to have much of an effect on the performance/durability of the AMs in the field.
+
+
+We need to scrap everything because some of the deployments are shorter than the battery life. To account for this we will remove all the first round deployments in the durability analysis to just look at deployments the exceeded the expected battery life. 
+
+We will divide the recording length by 41.6667 days to get a percentage of the expected recording length (based on the battery life) that the AM actually recorded for.
