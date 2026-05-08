@@ -213,7 +213,7 @@ ggplot(paired_plot_ids, aes(AM_housing, id_mean, group = paired_site))+
     geom_point(aes(color = AM_housing))+
     geom_line()+
     labs(x = "Housing Type",
-        y = "Average Detections per day",
+        y = "Average detections per day",
         color = "Housing Type")+
     scale_colour_viridis_d()+
     theme_minimal()+
@@ -284,8 +284,8 @@ durability <- deploy |>
 ```{r}
 durability |> 
     group_by(AM_housing) |> 
-    summarise(mean_percent = mean(percentage),
-    sd_percent = sd(percentage)) |> 
+    summarise(mean = mean(record_len),
+    sd = sd(record_len)) |> 
         pander()
 ```
 
@@ -591,3 +591,9 @@ aes(index, cum_num_species, group = deployment_num, color = AM_housing))+
   theme_minimal(base_size = 12)
 ```
 
+## Code Appendix
+
+```{r ref.label=knitr::all_labels()}
+#| echo: true
+#| eval: false
+```
