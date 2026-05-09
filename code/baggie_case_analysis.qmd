@@ -215,7 +215,6 @@ ggplot(paired_plot_ids, aes(AM_housing, id_mean, group = paired_site))+
     labs(x = "Housing Type",
         y = "Average detections per day",
         color = "Housing Type")+
-    scale_colour_viridis_d()+
     theme_minimal()+
     theme(legend.position = "none")
 ```
@@ -262,7 +261,6 @@ ggplot(paired_plot_sr, aes(AM_housing, sr_mean, group = paired_site))+
     labs(x = "Housing Type",
         y = "Average SR per day",
         color = "Housing Type")+
-            scale_colour_viridis_d()+
     theme_minimal()+
     theme(legend.position = "none")
 ```
@@ -275,14 +273,15 @@ Let's add this variable to the deployment dataset:
 
 
 ```{r}
-durability <- deploy |> 
-    mutate(percentage = record_len/battery_life)
+durability_test <- deploy |> 
+    select(deployment_num, AM_housing, deploy_len, record_len) |> 
+    filter(deploy_len > 21)
 ```
 
 #### Basic statistics
 
 ```{r}
-durability |> 
+durability_test |> 
     group_by(AM_housing) |> 
     summarise(mean = mean(record_len),
     sd = sd(record_len)) |> 
@@ -297,11 +296,6 @@ However, there is less variation in recording duration in the case group (especi
 ### Test
 
 ```{r}
-# need to only use round two deployments
-durability_test <- durability |> 
-    select(deployment_num, AM_housing, deploy_len, record_len, percentage) |> 
-    filter(deploy_len > 21)
-
 wilcox.test(as.numeric(record_len) ~ AM_housing, data = durability_test)
 ```
 
@@ -427,6 +421,16 @@ summary(mixed_id_mod)
 ```
 
 ```{r}
+spatial_id_mod <- splm(id_mean ~ AM_housing + Round, data = id_mod_sf, 
+spcov_type = "exponential")
+summary(mixed_id_mod)
+```
+
+```{r}
+glances(mixed_id_mod, spatial_id_mod) |> pander()
+```
+
+```{r}
 tidy(mixed_id_mod) |> pander()
 ```
 
@@ -440,9 +444,8 @@ overall_plot <- left_join(deploy, rich_cleaned, join_by(deployment_num == deploy
     paired = fct_recode(paired, "paired" = "y", "not paired" = "n"))
 
 ggplot(overall_plot, aes(AM_housing, sr_mean))+
-    geom_boxplot(color = "black")+
+    geom_boxplot(color = "black", outlier.shape = NA)+
     geom_jitter(width = 0.04, height = 0, aes(color = paired))+
-    scale_color_manual(values = c("paired" = "red", "not paired" = "black"))+
     labs(x = "Housing Type",
     y = "Average SR per day",
     color = "Site Type")+
@@ -453,9 +456,8 @@ id_plot <- left_join(deploy, ids, join_by(deployment_num == deployment_num)) |>
     paired = fct_recode(paired, "paired" = "y", "not paired" = "n"))
 
 ggplot(id_plot, aes(AM_housing, id_mean))+
-    geom_boxplot(color = "black")+
+    geom_boxplot(color = "black", outlier.shape = NA)+
     geom_jitter(width = 0.04, height = 0, aes(color = paired))+
-    scale_color_manual(values = c("paired" = "red", "not paired" = "black"))+
     labs(x = "Housing Type",
     y = "Average species detections per day",
     color = "Site Type")+
@@ -554,18 +556,16 @@ species_accum <- left_join(species_accum, treatment, by =  join_by("deployment_n
 
 #### Paired Accumulation graphs
 ```{r}
-#| fig-width: 12
-#| out-width: "100%"
+#| fig-width: 9
 paired_accum <- species_accum |> filter(paired == "y")
 
 ggplot(paired_accum, 
 aes(date, cum_num_species, group = deployment_num, color = AM_housing))+
   geom_line(linewidth = 1)+
   #geom_smooth(se = F)+
-  facet_wrap(~paired_site)+
+  facet_wrap(~paired_site, ncol = 2)+
   labs(x = "Date", y = "Cumulative number of species")+
   labs(color = "AM Housing")+
-  scale_colour_viridis_d()+
   theme_minimal(base_size = 14)
 ```
 
@@ -587,7 +587,6 @@ aes(index, cum_num_species, group = deployment_num, color = AM_housing))+
   facet_wrap(~Round)+
   labs(x = "Day deployed", y = "Cumulative number of species")+
   labs(color = "AM Housing")+
-  scale_colour_viridis_d()+
   theme_minimal(base_size = 12)
 ```
 
